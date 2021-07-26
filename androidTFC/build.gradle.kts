@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("org.sonarqube") version "3.3"
     kotlin("android")
 }
 
@@ -23,5 +24,13 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+    }
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "VictorHVS_TradingFight.club")
+        property("sonar.organization", "victorhvs")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
