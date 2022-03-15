@@ -4,7 +4,18 @@
 </p>
 
 <h1 align="center"> TradingFight.club </h1>
-Trading Fight.club (TFC) is an opensource financial social network. 
+TradingFight.club (TFC) is an opensource financial social network. 
+
+## ✅ MVP Features
+- [ ] Initial Setup
+- [ ] Splash
+- [ ] Home
+- [ ] Stocks
+- [ ] Stock Detail
+- [ ] Search
+- [ ] Testing
+- [ ] Google Play
+- [ ] Github Actions for CI/CD
 
 ## 🎨 Design
 
