@@ -1,4 +1,4 @@
-package club.tradingfight.android
+package com.victorhvs.tradingfightclub
 
 import org.junit.Test
 

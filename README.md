@@ -1,14 +1,14 @@
 
 <p align="center"> 
-   <img height="250" src="art/icon-white-bg-dark.png"/> 
+   <img src="art/logo-rect.svg"/> 
 </p>
 
-<h1 align="center"> TradingFight.club </h1>
+#
 TradingFight.club (TFC) is an opensource financial social network. 
 
 ## ✅ MVP Features
-- [ ] Initial Setup
-- [ ] Splash
+- [x] Initial Setup
+- [x] Splash
 - [ ] Home
 - [ ] Stocks
 - [ ] Stock Detail
@@ -22,7 +22,12 @@ TradingFight.club (TFC) is an opensource financial social network.
 Design by [Henrique Carvalho](https://www.linkedin.com/in/henrique-carvalho-3b001468/). 
 Unfortunately he abandoned the project, but I duplicated the figma file and let's following his style, at least for now :)
 
-https://www.figma.com/file/4F3GmpOJMa0ew3jEWPNCTy/Trade-Fight-Club
+🔗 https://www.figma.com/file/4F3GmpOJMa0ew3jEWPNCTy/Trade-Fight-Club
+
+<p align="center"> 
+   <img src="art/mvp-screens.png" alt="MVP SCREENS"/> 
+   MVP Screens
+</p>
 
 ## 🤝 Contributing
 
