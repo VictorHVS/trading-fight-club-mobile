@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", "group:all", ":dependencyDashboard", "schedule:daily"],
+  "assignees": ["VictorHVS"],
+  "baseBranches": ["main"],
+  "rebaseWhen": "behind-base-branch",
+  "reviewers": ["VictorHVS"],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "groupName": "compose",
+      "matchPackagePrefixes": ["androidx.compose"]
+    },
+    {
+      "automerge": true,
+      "matchUpdateTypes": ["minor","patch","pin","digest"]
+    }
+  ]
+}
