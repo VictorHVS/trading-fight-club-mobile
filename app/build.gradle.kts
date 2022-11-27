@@ -30,7 +30,7 @@ android {
             isTestCoverageEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -57,7 +57,7 @@ android {
                 "-P",
                 "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$outputDir",
                 "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$outputDir"
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$outputDir",
             )
         }
     }
@@ -79,8 +79,8 @@ android {
         htmlReport = true
         checkDependencies = true
 
-        lintConfig = file("${rootDir}/config/filters/lint.xml")
-        htmlOutput = file("${buildDir}/reports/lint.html")
+        lintConfig = file("$rootDir/config/filters/lint.xml")
+        htmlOutput = file("$buildDir/reports/lint.html")
     }
 }
 
@@ -97,6 +97,8 @@ dependencies {
     implementation(libs.compose.material3.windowSizeClass)
 
     implementation(libs.accompanist.systemuicontroller)
+
+    implementation(libs.gradle.detekt)
 
     coreLibraryDesugaring(libs.desugar)
 

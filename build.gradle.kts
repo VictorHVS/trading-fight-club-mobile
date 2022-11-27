@@ -1,17 +1,17 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import kotlinx.kover.api.CounterType
 import kotlinx.kover.api.IntellijEngine
-import kotlinx.kover.api.KoverMergedConfig
 import kotlinx.kover.api.KoverMergedFilters
 import kotlinx.kover.api.KoverProjectConfig
 import kotlinx.kover.api.KoverTaskExtension
 import kotlinx.kover.api.KoverVerifyConfig
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.TestReport
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
-import org.gradle.api.tasks.testing.TestReport
 
 buildscript {
     repositories {
@@ -31,6 +31,7 @@ buildscript {
 
 plugins {
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 }
 
 val liba = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -38,6 +39,7 @@ val liba = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val Test.isDev get() = name.contains("debug", ignoreCase = true)
 
 fun Project.catalogVersion(alias: String) = liba.findVersion(alias).get().toString()
+fun Project.catalogLib(alias: String) = liba.findLibrary(alias).get()
 
 val koverIncludes = listOf("com.victorhvs.tfc.*")
 val koverExcludes = listOf(
@@ -78,10 +80,12 @@ val koverExcludes = listOf(
     // Ui
     "*.ui.*.components.*",
     "*.ui.*.view.*",
+    "*.theme.*",
 )
 
 allprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
 
     group = "com.victorvs.tfc"
     version = "0.1.0"
@@ -108,6 +112,12 @@ allprojects {
         enable()
         filters { commonFilters() }
         verify { rules() }
+    }
+
+    dependencies {
+        detektPlugins(catalogLib("detekt-compose"))
+        detektPlugins(catalogLib("detekt-compose2"))
+        detektPlugins(catalogLib("detekt-formatting"))
     }
 }
 
@@ -150,4 +160,25 @@ tasks.register("unitTests", TestReport::class) {
     mustRunAfter(testTasks)
     destinationDirectory.set(file("$buildDir/reports/allTests"))
     testResults.setFrom(testTasks)
+}
+
+tasks.register("detektAll", Detekt::class) {
+    description = "Run detekt in all modules"
+
+    parallel = true
+    ignoreFailures = false
+    autoCorrect = true
+    buildUponDefaultConfig = true
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+    setSource(files(projectDir))
+    config.setFrom(files("$rootDir/config/detekt.yml"))
+    include("**/*.kt", "**/*.kts")
+    exclude("**/resources/**", "**/build/**")
+
+    reports {
+        html.required.set(true)
+        sarif.required.set(true)
+        txt.required.set(false)
+        xml.required.set(true)
+    }
 }
