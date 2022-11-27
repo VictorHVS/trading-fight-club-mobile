@@ -9,6 +9,8 @@ ksp = "1.7.10-1.0.6"
 firebaseCrashlyticsPlugin = "2.9.2"
 googleServices = "4.3.14"
 
+coverage-engine = "1.0.686"
+
 # production libraries
 coreKtx = "1.9.0"
 androidxAppCompat = "1.5.1"
