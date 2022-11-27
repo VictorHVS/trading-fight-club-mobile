@@ -121,8 +121,6 @@ allprojects {
     }
 }
 
-val MIN_COVERED_PERCENTAGE = 80
-
 fun KoverMergedFilters.commonFilters() {
     classes {
         excludes.addAll(koverExcludes)
@@ -135,14 +133,14 @@ fun KoverVerifyConfig.rules() {
         name = "Minimal instruction coverage rate in percent"
         bound {
             counter = CounterType.INSTRUCTION
-            minValue = MIN_COVERED_PERCENTAGE
+            minValue = 80
         }
     }
     rule {
         name = "Minimal line coverage rate in percent"
         bound {
             counter = CounterType.LINE
-            minValue = MIN_COVERED_PERCENTAGE
+            minValue = 80
         }
     }
 }
