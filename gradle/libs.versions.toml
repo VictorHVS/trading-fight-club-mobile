@@ -124,7 +124,6 @@ test-kotlinCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-tes
 test-mockk = { module = "io.mockk:mockk", version.ref = "testMockk" }
 
 # android test libraries
-test-androidCompose = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 test-androidHilt = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 test-androidHiltCompiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 test-androidRunner = { module = "androidx.test:runner", version.ref = "testAndroidRunner" }
