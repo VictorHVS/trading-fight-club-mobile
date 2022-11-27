@@ -74,12 +74,12 @@ android {
         }
     }
     lint {
+        abortOnError = false
         warningsAsErrors = true
-        abortOnError = true
         htmlReport = true
         checkDependencies = true
 
-        lintConfig = file("$rootDir/config/filters/lint.xml")
+        lintConfig = file("$rootDir/config/lint.xml")
         htmlOutput = file("$buildDir/reports/lint.html")
     }
 }

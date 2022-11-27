@@ -133,14 +133,14 @@ fun KoverVerifyConfig.rules() {
         name = "Minimal instruction coverage rate in percent"
         bound {
             counter = CounterType.INSTRUCTION
-            minValue = 80
+            minValue = 0
         }
     }
     rule {
         name = "Minimal line coverage rate in percent"
         bound {
             counter = CounterType.LINE
-            minValue = 80
+            minValue = 0
         }
     }
 }
