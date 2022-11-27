@@ -5,11 +5,13 @@ import kotlinx.kover.api.KoverMergedFilters
 import kotlinx.kover.api.KoverProjectConfig
 import kotlinx.kover.api.KoverTaskExtension
 import kotlinx.kover.api.KoverVerifyConfig
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
+import org.gradle.api.tasks.testing.TestReport
 
 buildscript {
     repositories {
@@ -24,7 +26,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.7.10")
         classpath("com.google.gms:google-services:4.3.14")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
-//        classpath("org.jacoco:org.jacoco.core:0.8.8")
     }
 }
 
@@ -107,15 +108,6 @@ allprojects {
         enable()
         filters { commonFilters() }
         verify { rules() }
-
-//        xmlReport {
-//            onCheck.set(false)
-//            reportFile.set(layout.buildDirectory.file("$buildDir/reports/kover/result.xml"))
-//        }
-//        htmlReport {
-//            onCheck.set(false)
-//            reportDir.set(layout.buildDirectory.dir("$buildDir/reports/kover/html-result"))
-//        }
     }
 }
 
@@ -147,4 +139,15 @@ fun KoverVerifyConfig.rules() {
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
+}
+
+@Suppress("UnstableApiUsage")
+tasks.register("unitTests", TestReport::class) {
+    val testTasks = subprojects.map { p ->
+        p.tasks.withType<Test>().matching { t -> t.isDev }
+    }
+
+    mustRunAfter(testTasks)
+    destinationDirectory.set(file("$buildDir/reports/allTests"))
+    testResults.setFrom(testTasks)
 }

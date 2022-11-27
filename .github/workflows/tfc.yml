@@ -98,7 +98,7 @@ jobs:
       - name: Common Steps
         uses: ./.github/actions/common-steps
       - name: Run unit tests
-        run: ./gradlew koverXmlReport koverMergedReport koverMergedVerify --no-daemon --scan
+        run: ./gradlew unitTests koverXmlReport koverMergedReport koverMergedVerify --no-daemon --scan
       - name: Upload tests reports artifact (success)
         uses: actions/upload-artifact@v3
         if: success()
