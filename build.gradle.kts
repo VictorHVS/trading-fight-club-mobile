@@ -12,6 +12,7 @@ import org.gradle.api.tasks.testing.TestReport
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
+import org.sonarqube.gradle.SonarQubeExtension
 
 buildscript {
     repositories {
@@ -26,6 +27,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.7.10")
         classpath("com.google.gms:google-services:4.3.14")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.4.0.2513")
     }
 }
 
@@ -86,6 +88,7 @@ val koverExcludes = listOf(
 allprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "org.sonarqube")
 
     group = "com.victorvs.tfc"
     version = "0.1.0"
@@ -118,6 +121,17 @@ allprojects {
         detektPlugins(catalogLib("detekt-compose"))
         detektPlugins(catalogLib("detekt-compose2"))
         detektPlugins(catalogLib("detekt-formatting"))
+    }
+
+    extensions.configure<SonarQubeExtension> {
+        properties {
+            property("sonar.android.lint.report", "$buildDir/reports/lint-results-debug.xml")
+            property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/kover/xml/report.xml")
+            property("sonar.java.binaries", "$buildDir/tmp/kotlin-classes/debug")
+            property("sonar.junit.reportPaths", "$buildDir/test-results/testDebugUnitTest")
+            property("sonar.sources", "$projectDir/src/main/kotlin")
+            property("sonar.tests", "$projectDir/src/test/kotlin")
+        }
     }
 }
 

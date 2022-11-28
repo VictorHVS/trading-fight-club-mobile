@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.gradle.detekt)
+    implementation(libs.gradle.sonarqube)
 
     coreLibraryDesugaring(libs.desugar)
 
