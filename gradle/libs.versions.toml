@@ -139,4 +139,4 @@ detekt-compose = { module = "com.twitter.compose.rules:detekt", version = "0.0.2
 detekt-compose2 = { module = "ru.kode:detekt-rules-compose", version = "1.2.2" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 gradle-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-gradle-sonarqube = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version = "3.4.0.2513" }
+gradle-sonarqube = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version = "3.5.0.2730" }

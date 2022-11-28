@@ -12,7 +12,8 @@ import org.gradle.api.tasks.testing.TestReport
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
-import org.sonarqube.gradle.SonarQubeExtension
+import org.sonarqube.gradle.SonarExtension
+import org.sonarqube.gradle.SonarProperties
 
 buildscript {
     repositories {
@@ -27,13 +28,14 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.7.10")
         classpath("com.google.gms:google-services:4.3.14")
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
-        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.4.0.2513")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730")
     }
 }
 
 plugins {
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 val liba = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -123,15 +125,25 @@ allprojects {
         detektPlugins(catalogLib("detekt-formatting"))
     }
 
-    extensions.configure<SonarQubeExtension> {
+    extensions.configure<SonarExtension> {
         properties {
-            property("sonar.android.lint.report", "$buildDir/reports/lint-results-debug.xml")
-            property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/kover/xml/report.xml")
-            property("sonar.java.binaries", "$buildDir/tmp/kotlin-classes/debug")
-            property("sonar.junit.reportPaths", "$buildDir/test-results/testDebugUnitTest")
-            property("sonar.sources", "$projectDir/src/main/kotlin")
-            property("sonar.tests", "$projectDir/src/test/kotlin")
+            addFilesIfExist("sonar.android.lint.report", "$buildDir/reports/lint-results-debug.xml")
+            addFilesIfExist("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/kover/xml/report.xml")
+            addFilesIfExist("sonar.java.binaries", "$buildDir/tmp/kotlin-classes/debug")
+            addFilesIfExist("sonar.junit.reportPaths", "$buildDir/test-results/testDebugUnitTest")
+            addFilesIfExist("sonar.sources", "$projectDir/src/main/kotlin")
+            addFilesIfExist("sonar.tests", "$projectDir/src/test/kotlin")
         }
+    }
+}
+
+fun SonarProperties.addFilesIfExist(property: String, vararg paths: String) {
+    paths.filter { file ->
+        File(file).exists()
+    }.takeUnless { files ->
+        files.isEmpty()
+    }?.joinToString(separator = ",")?.let { files ->
+        property(property, files)
     }
 }
 
