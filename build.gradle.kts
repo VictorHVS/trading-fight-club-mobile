@@ -87,6 +87,12 @@ val koverExcludes = listOf(
     "*.theme.*",
 )
 
+val codeExclusions = listOf(
+    "**/R.*",
+    "**/R$*.*",
+    "**/BuildConfig.*",
+)
+
 allprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "io.gitlab.arturbosch.detekt")
@@ -133,6 +139,23 @@ allprojects {
             addFilesIfExist("sonar.junit.reportPaths", "$buildDir/test-results/testDebugUnitTest")
             addFilesIfExist("sonar.sources", "$projectDir/src/main/kotlin")
             addFilesIfExist("sonar.tests", "$projectDir/src/test/kotlin")
+            addFilesIfExist("sonar.kotlin.detekt.reportPaths", "$buildDir/reports/detekt/detekt.xml")
+
+            property("sonar.host.url", "https://sonarcloud.io")
+            property("sonar.organization", "victorhvs")
+            property("sonar.projectKey", "VictorHVS_TradingFight.club")
+            property("sonar.projectName", "TradingFight.club")
+            property("sonar.coverage.exclusions", koverExcludes.joinToString(separator = ","))
+            property("sonar.exclusions", codeExclusions.joinToString(separator = ","))
+            property("sonar.pullrequest.provider", "GitHub")
+            property("sonar.pullrequest.github.repository", "VictorHVS/trading-fight-club-mobile")
+            property("sonar.java.coveragePlugin", "jacoco")
+            property("sonar.language", "kotlin")
+            property("sonar.log.level", "TRACE")
+            property("sonar.qualitygate.wait", true)
+            property("sonar.sourceEncoding", "UTF-8")
+            property("sonar.tags", "android")
+            property("sonar.verbose", true)
         }
     }
 }
