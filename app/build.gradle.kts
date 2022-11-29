@@ -30,13 +30,13 @@ android {
             isTestCoverageEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
 
     compileOptions {
-//        isCoreLibraryDesugaringEnabled = true
+        isCoreLibraryDesugaringEnabled = true
 
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -50,6 +50,16 @@ android {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
         )
+
+        if (project.findProperty("enableComposeCompilerReports") == "true") {
+            val outputDir = project.buildDir.path + "/compose-reports"
+            freeCompilerArgs = freeCompilerArgs + listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$outputDir",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$outputDir",
+            )
+        }
     }
 
     buildFeatures {
@@ -64,13 +74,13 @@ android {
         }
     }
     lint {
+        abortOnError = false
         warningsAsErrors = true
-        abortOnError = true
         htmlReport = true
         checkDependencies = true
 
-        lintConfig = file("${rootDir}/config/filters/lint.xml")
-        htmlOutput = file("${buildDir}/reports/lint.html")
+        lintConfig = file("$rootDir/config/lint.xml")
+        htmlOutput = file("$buildDir/reports/lint.html")
     }
 }
 
@@ -88,6 +98,11 @@ dependencies {
 
     implementation(libs.accompanist.systemuicontroller)
 
+    implementation(libs.gradle.detekt)
+//    implementation(libs.gradle.sonarqube)
+
+    coreLibraryDesugaring(libs.desugar)
+
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
     implementation(libs.coil.kt.svg)
@@ -100,14 +115,13 @@ dependencies {
     implementation(libs.firebase.appCheck)
     implementation(libs.firebase.appCheckDebug)
 
-    testImplementation(libs.test.junit)
     implementation(libs.androidx.test.core)
     implementation(libs.androidx.test.espresso.core)
     implementation(libs.androidx.test.ext)
     implementation(libs.androidx.test.runner)
     implementation(libs.androidx.test.rules)
     implementation(libs.androidx.test.uiautomator)
-    androidTestImplementation(libs.compose.ui.test)
+    api(libs.compose.ui.test)
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.test.composeUiTestManifest)
+    debugImplementation(libs.compose.ui.testManifest)
 }
