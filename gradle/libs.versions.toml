@@ -5,7 +5,7 @@ androidGradle = "7.3.1"
 sonarqube = "3.2.0"
 ktlint = "0.47.1"
 junit = "4.13.2"
-ksp = "1.7.22-1.0.8"
+ksp = "1.7.10-1.0.6"
 firebaseCrashlyticsPlugin = "2.9.2"
 googleServices = "4.3.14"
 
