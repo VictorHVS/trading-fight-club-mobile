@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.ui.theme
+package com.victorhvs.tfc.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

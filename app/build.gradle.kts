@@ -1,6 +1,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    kotlin("kapt")
 }
 
 android {
@@ -93,13 +97,20 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material.iconsExtended)
+    implementation(libs.compose.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.navigationHilt)
 
     implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.gradle.detekt)
-//    implementation(libs.gradle.sonarqube)
+    implementation(libs.gradle.hilt)
+
+    implementation(libs.hilt)
+    kapt(libs.hiltCompiler)
 
     coreLibraryDesugaring(libs.desugar)
 
