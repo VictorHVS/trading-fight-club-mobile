@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.presentation.utils
+package com.victorhvs.tfc.presentation.extensions
 
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -17,7 +17,7 @@ fun Date?.dateToString(format: String = "dd/MM/yyyy"): String {
     return dateFormatter.format(this)
 }
 
-fun Number.toFormatedCurrency(): String {
+fun Number.toFormatedCurrency(showSign: Boolean = false): String {
     val df = DecimalFormat(
         "#,##0.00",
         DecimalFormatSymbols().apply {
@@ -27,5 +27,10 @@ fun Number.toFormatedCurrency(): String {
     ).apply {
         isDecimalSeparatorAlwaysShown = true
     }
-    return df.format(this)
+
+    val formattedText = df.format(this)
+    return if (showSign){
+        val sign = if (this.toDouble() < 0) "-" else "+"
+        "$sign$formattedText"
+    } else formattedText
 }

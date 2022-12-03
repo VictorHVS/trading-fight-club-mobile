@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TFClub</string>
+    <string name="floating_price" translatable="false">%s %s</string>
 </resources>
