@@ -9,6 +9,8 @@ import com.victorhvs.tfc.core.DispatcherProvider
 import com.victorhvs.tfc.core.DispatcherProviderImpl
 import com.victorhvs.tfc.data.datasource.FirebaseDataSource
 import com.victorhvs.tfc.data.datasource.FirebaseDataSourceImp
+import com.victorhvs.tfc.domain.repository.StockRepository
+import com.victorhvs.tfc.domain.repository.StockRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,4 +49,14 @@ object DI {
             client = client,
             dispatcher = dispacher
         )
+
+    @Provides
+    @Singleton
+    fun provideStockRepository(
+        firebaseDataSource: FirebaseDataSource,
+        dispacher: DispatcherProvider
+    ): StockRepository = StockRepositoryImpl(
+        firebaseDataSource = firebaseDataSource,
+        dispatcher = dispacher
+    )
 }

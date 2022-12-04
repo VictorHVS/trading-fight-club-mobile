@@ -91,17 +91,20 @@ android {
 dependencies {
 
     implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycleRuntime)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.foundation.layout)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material.iconsExtended)
     implementation(libs.compose.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
-    implementation(libs.compose.navigation)
+//    implementation(libs.compose.navigation)
+    implementation("androidx.navigation:navigation-compose:2.5.1")
     implementation(libs.compose.navigationHilt)
 
     implementation(libs.accompanist.systemuicontroller)
@@ -117,6 +120,8 @@ dependencies {
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
     implementation(libs.coil.kt.svg)
+
+    implementation(libs.lifecycle.viewmodel)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

@@ -1,11 +1,15 @@
 package com.victorhvs.tfc.data.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.victorhvs.tfc.core.DispatcherProvider
+import com.victorhvs.tfc.domain.models.Stock
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface FirebaseDataSource {
-//    suspend fun getMegaResults(): List<ContestResult>
+    suspend fun getStocks(): List<Stock>
 }
 
 class FirebaseDataSourceImp @Inject constructor(
@@ -13,16 +17,23 @@ class FirebaseDataSourceImp @Inject constructor(
     val dispatcher: DispatcherProvider
 ) : FirebaseDataSource {
 
-//    override suspend fun getMegaResults(): List<ContestResult> {
-//        return withContext(dispatcher.io()) {
-//            val mLotteryCollection = client.collection(Constants.FIRESTORE_COLLECTION_MEGA)
-//
-//            val snapshot = mLotteryCollection.limit(15)
-//                .orderBy(Constants.FIRESTORE_CONTEST_DATEFIELD, Query.Direction.DESCENDING)
-//                .get()
-//                .await()
-//
-//            snapshot.toObjects(ContestResult::class.java)
-//        }
-//    }
+    companion object {
+        const val STOCK_REF = "stocks"
+        const val STOCK_ORDER_FIELD = "uuid"
+    }
+    override suspend fun getStocks(): List<Stock> {
+        return withContext(dispatcher.io()) {
+            val mLotteryCollection = client.collection(STOCK_REF)
+
+            val snapshot = mLotteryCollection
+                .whereEqualTo("enabled", true)
+                .limit(50)
+                .orderBy(STOCK_ORDER_FIELD, Query.Direction.ASCENDING)
+                .get()
+                .await()
+
+            snapshot.toObjects(Stock::class.java)
+        }
+    }
+
 }

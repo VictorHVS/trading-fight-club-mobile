@@ -1,6 +1,6 @@
 package com.victorhvs.tfc.presentation.components
 
-import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +27,7 @@ import com.victorhvs.tfc.data.fake.FakeDataSource
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.extensions.gainOrLossColor
 import com.victorhvs.tfc.presentation.extensions.toFormatedCurrency
+import com.victorhvs.tfc.presentation.theme.TfcTheme
 
 @Composable
 fun CardHorizontalStock(
@@ -39,6 +40,7 @@ fun CardHorizontalStock(
             overlineText = { Text(stock.symbol) },
             trailingContent = {
                 PriceFloatingLabel(
+                    price = stock.price,
                     floatAbsolute = stock.priceAbsoluteFloating,
                     floatPercentage = stock.priceFloating
                 )
@@ -54,6 +56,10 @@ fun CardHorizontalStock(
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .size(40.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = CircleShape
+                        )
                         .clip(CircleShape)
                 )
             }
@@ -68,7 +74,6 @@ fun PriceFloatingLabel(
     price: Double? = null,
     floatPercentage: Double? = null,
     floatAbsolute: Double? = null
-
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.End) {
         price?.let {
@@ -77,22 +82,22 @@ fun PriceFloatingLabel(
                     text = it.toFormatedCurrency(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.labelSmall,
-                    color = it.gainOrLossColor()
+                    color = floatPercentage?.gainOrLossColor() ?: MaterialTheme.colorScheme.primary
                 )
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(1.dp)) {
             floatAbsolute?.let {
                 Text(
-                    text = it.toFormatedCurrency(showSign = true),
+                    text = it.toFormatedCurrency(),
                     color = it.gainOrLossColor(),
                     style = MaterialTheme.typography.labelSmall
                 )
             }
 
             floatPercentage?.let {
-                val text = if (floatAbsolute != null) "(${it.toFormatedCurrency()})"
-                else it.toFormatedCurrency()
+                val text = if (floatAbsolute != null) "(${it.toFormatedCurrency()}%)"
+                else it.toFormatedCurrency(showSign = true)
                 Text(
                     text = text,
                     color = it.gainOrLossColor(),
@@ -103,8 +108,10 @@ fun PriceFloatingLabel(
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
 @Composable
 fun CardHorizontalStockPreview() {
-    CardHorizontalStock(stock = FakeDataSource.flry3)
+    TfcTheme {
+        CardHorizontalStock(stock = FakeDataSource.flry3)
+    }
 }

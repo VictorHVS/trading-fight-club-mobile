@@ -46,6 +46,12 @@ jobs:
           fetch-depth: 0
       - name: Common Steps
         uses: ./.github/actions/common-steps
+      - name: Create and populate google-services file
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+        run: |
+          touch app/google-services.json
+          echo $GOOGLE_SERVICES >> app/google-services.json
       - name: Assemble TFC
         run: ./gradlew assembleDebug --no-daemon --scan
       - name: Upload compose reports artifact
