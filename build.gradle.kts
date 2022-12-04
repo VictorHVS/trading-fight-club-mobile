@@ -136,7 +136,7 @@ allprojects {
             addFilesIfExist("sonar.android.lint.report", "$buildDir/reports/lint-results-debug.xml")
             addFilesIfExist(
                 "sonar.coverage.jacoco.xmlReportPaths",
-                "$buildDir/reports/kover/xml/report.xml"
+                "$buildDir/reports/kover/xml/report.xml",
             )
             addFilesIfExist("sonar.java.binaries", "$buildDir/tmp/kotlin-classes/debug")
             addFilesIfExist("sonar.junit.reportPaths", "$buildDir/test-results/testDebugUnitTest")
@@ -144,7 +144,7 @@ allprojects {
             addFilesIfExist("sonar.tests", "$projectDir/src/test/kotlin")
             addFilesIfExist(
                 "sonar.kotlin.detekt.reportPaths",
-                "$buildDir/reports/detekt/detekt.xml"
+                "$buildDir/reports/detekt/detekt.xml",
             )
 
             property("sonar.host.url", "https://sonarcloud.io")
@@ -219,7 +219,7 @@ tasks.register("detektAll", Detekt::class) {
     description = "Run detekt in all modules"
 
     parallel = true
-    ignoreFailures = false
+    ignoreFailures = true
     autoCorrect = true
     buildUponDefaultConfig = true
     jvmTarget = JavaVersion.VERSION_1_8.toString()

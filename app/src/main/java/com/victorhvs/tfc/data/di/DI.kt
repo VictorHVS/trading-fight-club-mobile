@@ -47,7 +47,7 @@ object DI {
     ): FirebaseDataSource =
         FirebaseDataSourceImp(
             client = client,
-            dispatcher = dispacher
+            dispatcher = dispacher,
         )
 
     @Provides
@@ -57,6 +57,6 @@ object DI {
         dispacher: DispatcherProvider
     ): StockRepository = StockRepositoryImpl(
         firebaseDataSource = firebaseDataSource,
-        dispatcher = dispacher
+        dispatcher = dispacher,
     )
 }

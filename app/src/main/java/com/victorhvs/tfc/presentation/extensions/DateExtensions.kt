@@ -1,12 +1,12 @@
 package com.victorhvs.tfc.presentation.extensions
 
 import com.google.firebase.Timestamp
+import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.math.BigDecimal
 
 fun Date?.dateToString(format: String = "dd/MM/yyyy"): String {
     if (this == null) {
@@ -48,15 +48,16 @@ fun Number.toFormatedCurrency(showSign: Boolean = false): String {
         DecimalFormatSymbols().apply {
             groupingSeparator = '.'
             decimalSeparator = ','
-        }
+        },
     ).apply {
         isDecimalSeparatorAlwaysShown = true
     }
 
     val formattedText = df.format(this)
-    return if (showSign){
+    return if (showSign) {
         val sign = if (this.toDouble() < 0) "" else "+"
         "$sign$formattedText"
-    } else formattedText
+    } else {
+        formattedText
+    }
 }
-

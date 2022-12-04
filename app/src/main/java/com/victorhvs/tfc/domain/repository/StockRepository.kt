@@ -7,4 +7,3 @@ import kotlinx.coroutines.flow.Flow
 interface StockRepository {
     suspend fun getStocks(): Flow<State<List<Stock>>>
 }
-

@@ -42,7 +42,7 @@ fun CardHorizontalStock(
                 PriceFloatingLabel(
                     price = stock.price,
                     floatAbsolute = stock.priceAbsoluteFloating,
-                    floatPercentage = stock.priceFloating
+                    floatPercentage = stock.priceFloating,
                 )
             },
             leadingContent = {
@@ -58,11 +58,11 @@ fun CardHorizontalStock(
                         .size(40.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = CircleShape
+                            shape = CircleShape,
                         )
-                        .clip(CircleShape)
+                        .clip(CircleShape),
                 )
-            }
+            },
         )
         Divider()
     }
@@ -82,7 +82,7 @@ fun PriceFloatingLabel(
                     text = it.toFormatedCurrency(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.labelSmall,
-                    color = floatPercentage?.gainOrLossColor() ?: MaterialTheme.colorScheme.primary
+                    color = floatPercentage?.gainOrLossColor() ?: MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -91,17 +91,20 @@ fun PriceFloatingLabel(
                 Text(
                     text = it.toFormatedCurrency(),
                     color = it.gainOrLossColor(),
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
 
             floatPercentage?.let {
-                val text = if (floatAbsolute != null) "(${it.toFormatedCurrency()}%)"
-                else it.toFormatedCurrency(showSign = true)
+                val text = if (floatAbsolute != null) {
+                    "(${it.toFormatedCurrency()}%)"
+                } else {
+                    it.toFormatedCurrency(showSign = true)
+                }
                 Text(
                     text = text,
                     color = it.gainOrLossColor(),
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
         }
@@ -110,7 +113,7 @@ fun PriceFloatingLabel(
 
 @Preview
 @Composable
-fun CardHorizontalStockPreview() {
+private fun CardHorizontalStockPreview() {
     TfcTheme {
         CardHorizontalStock(stock = FakeDataSource.flry3)
     }

@@ -9,10 +9,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,23 +28,29 @@ import com.victorhvs.tfc.presentation.theme.TfcTheme
 
 @Composable
 fun ExploreScreen(
+    modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = hiltViewModel()
 ) {
     val state = viewModel.stocks.collectAsState(initial = State.loading()).value
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 title = {
                     Text(text = stringResource(id = R.string.screen_explore))
-                }
+                },
+                scrollBehavior = scrollBehavior,
             )
-        }
+        },
     ) {
         Column(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
+                .wrapContentSize(Alignment.Center),
         ) {
             when (state) {
                 is State.Failed -> {
@@ -54,7 +63,7 @@ fun ExploreScreen(
 
                 is State.Success -> {
                     StockList(
-                        stocks = state.data
+                        stocks = state.data,
                     )
                 }
             }
@@ -62,17 +71,15 @@ fun ExploreScreen(
     }
 }
 
-
 @Composable
 fun StockList(
     stocks: List<Stock>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         items(items = stocks, key = { it.uuid }) { stock ->
             CardHorizontalStock(
                 stock = stock,
-                modifier = modifier
             )
         }
     }
@@ -80,7 +87,7 @@ fun StockList(
 
 @Preview
 @Composable
-fun StockListPreview() {
+private fun StockListPreview() {
 
     val stocks = arrayListOf(
         FakeDataSource.flry3.copy(uuid = "1"),

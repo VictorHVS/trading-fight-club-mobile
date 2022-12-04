@@ -10,7 +10,7 @@ import com.victorhvs.tfc.presentation.screens.stocklist.ExploreScreen
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Explore.route
+        startDestination = Screen.Explore.route,
     ) {
         composable(route = Screen.Explore.route) {
             ExploreScreen()

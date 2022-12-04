@@ -103,8 +103,7 @@ dependencies {
     implementation(libs.compose.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
-//    implementation(libs.compose.navigation)
-    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation(libs.compose.navigation)
     implementation(libs.compose.navigationHilt)
 
     implementation(libs.accompanist.systemuicontroller)

@@ -6,10 +6,10 @@ import com.victorhvs.tfc.core.State
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.domain.repository.StockRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ExploreViewModel @Inject constructor(

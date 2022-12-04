@@ -8,5 +8,5 @@ fun BigDecimal?.orZero(): BigDecimal = this ?: BigDecimal.ZERO
 
 fun BigDecimal?.toCurrency(): String =
     NumberFormat.getCurrencyInstance().format(
-        this.orZero().setScale(2, RoundingMode.CEILING)
+        this.orZero().setScale(2, RoundingMode.CEILING),
     ).orEmpty()

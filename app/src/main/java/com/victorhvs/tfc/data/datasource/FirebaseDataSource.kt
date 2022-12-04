@@ -35,5 +35,4 @@ class FirebaseDataSourceImp @Inject constructor(
             snapshot.toObjects(Stock::class.java)
         }
     }
-
 }

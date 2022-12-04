@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun DefaultPreview() {
     TfcTheme(dynamicColor = false) {
         val navController = rememberNavController()
         SetupNavGraph(navController = navController)
