@@ -20,15 +20,15 @@ class FirebaseDataSourceImp @Inject constructor(
     companion object {
         const val STOCK_REF = "stocks"
         const val STOCK_ORDER_FIELD = "uuid"
+        const val STOCKS_PER_PAGE = 20L
     }
+
     override suspend fun getStocks(): List<Stock> {
         return withContext(dispatcher.io()) {
-            val mLotteryCollection = client.collection(STOCK_REF)
-
-            val snapshot = mLotteryCollection
+            val snapshot = client.collection(STOCK_REF)
                 .whereEqualTo("enabled", true)
-                .limit(50)
                 .orderBy(STOCK_ORDER_FIELD, Query.Direction.ASCENDING)
+                .limit(STOCKS_PER_PAGE)
                 .get()
                 .await()
 

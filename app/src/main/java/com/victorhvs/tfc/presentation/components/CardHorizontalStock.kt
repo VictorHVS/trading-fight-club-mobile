@@ -1,6 +1,7 @@
 package com.victorhvs.tfc.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,9 +33,10 @@ import com.victorhvs.tfc.presentation.theme.TfcTheme
 @Composable
 fun CardHorizontalStock(
     stock: Stock,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onStockClicked: (stock: Stock) -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clickable { onStockClicked(stock) }) {
         ListItem(
             headlineText = { Text(stock.name) },
             overlineText = { Text(stock.symbol) },
@@ -51,7 +53,7 @@ fun CardHorizontalStock(
                         .data(stock.logoUrl)
                         .crossfade(true)
                         .build(),
-                    placeholder = painterResource(R.drawable.ic_launcher_foreground),
+//                    placeholder = painterResource(R.drawable.ic_launcher_foreground),
                     contentDescription = stock.name,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -115,6 +117,6 @@ fun PriceFloatingLabel(
 @Composable
 private fun CardHorizontalStockPreview() {
     TfcTheme {
-        CardHorizontalStock(stock = FakeDataSource.flry3)
+        CardHorizontalStock(stock = FakeDataSource.flry3, onStockClicked = {})
     }
 }

@@ -10,10 +10,32 @@ import com.victorhvs.tfc.presentation.screens.stocklist.ExploreScreen
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Explore.route,
+        startDestination = Screen.ExploreScreen.route,
     ) {
-        composable(route = Screen.Explore.route) {
-            ExploreScreen()
+        composable(route = Screen.ExploreScreen.route) {
+            ExploreScreen(
+                navigateToStockScreen = { _ ->
+//                    val jsonStock = Gson().toJson(stock)
+//                    navController.navigate("${StockDetailScreen.route}/${jsonStock}")
+                }
+            )
         }
+//        composable(
+//            route = "${StockDetailScreen.route}/{jsonStock}",
+//            arguments = listOf(
+//                navArgument("jsonStock") {
+//                    type = NavType.StringType
+//                }
+//            )
+//        ) { backStackEntry ->
+//            val jsonStock = backStackEntry.arguments?.getString("jsonStock") ?: ""
+//            val product = Gson().fromJson(jsonStock, Stock::class.java)
+//            StockDetailScreen(
+//                product = product,
+//                navigateBack = {
+//                    navController.popBackStack()
+//                }
+//            )
+//        }
     }
 }

@@ -105,6 +105,8 @@ dependencies {
     implementation(libs.compose.material3.windowSizeClass)
     implementation(libs.compose.navigation)
     implementation(libs.compose.navigationHilt)
+//    implementation(libs.compose.paging3)
+    implementation("androidx.paging:paging-compose:1.0.0-alpha16")
 
     implementation(libs.accompanist.systemuicontroller)
 
@@ -112,6 +114,7 @@ dependencies {
     implementation(libs.gradle.hilt)
 
     implementation(libs.hilt)
+//    implementation("androidx.paging:paging-common-ktx:3.1.1")
     kapt(libs.hiltCompiler)
 
     coreLibraryDesugaring(libs.desugar)

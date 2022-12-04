@@ -87,6 +87,7 @@ compose-material-iconsExtended = { group = "androidx.compose.material", name = "
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-paging3 = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha14" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.5.1" }
 compose-navigationHilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "composeNavigationHilt" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.5.1" }

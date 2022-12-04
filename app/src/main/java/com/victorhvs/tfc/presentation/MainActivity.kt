@@ -16,8 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TfcTheme {
-                val navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+                SetupNavGraph(navController = rememberNavController())
             }
         }
     }
@@ -26,8 +25,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-    TfcTheme(dynamicColor = false) {
-        val navController = rememberNavController()
-        SetupNavGraph(navController = navController)
+    TfcTheme {
+        SetupNavGraph(navController = rememberNavController())
     }
 }

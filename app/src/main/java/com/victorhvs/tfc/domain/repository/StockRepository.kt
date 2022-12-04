@@ -1,9 +1,9 @@
 package com.victorhvs.tfc.domain.repository
 
-import com.victorhvs.tfc.core.State
+import androidx.paging.PagingData
 import com.victorhvs.tfc.domain.models.Stock
 import kotlinx.coroutines.flow.Flow
 
 interface StockRepository {
-    suspend fun getStocks(): Flow<State<List<Stock>>>
+    fun searchStocks(query: String): Flow<PagingData<Stock>>
 }
