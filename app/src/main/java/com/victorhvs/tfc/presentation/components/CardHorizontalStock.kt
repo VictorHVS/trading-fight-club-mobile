@@ -1,5 +1,6 @@
 package com.victorhvs.tfc.presentation.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,10 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.victorhvs.tfc.R
 import com.victorhvs.tfc.data.fake.FakeDataSource
@@ -48,15 +51,11 @@ fun CardHorizontalStock(
                 )
             },
             leadingContent = {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(stock.logoUrl)
-                        .crossfade(true)
-                        .build(),
-//                    placeholder = painterResource(R.drawable.ic_launcher_foreground),
+                val painter = rememberAsyncImagePainter(stock.logoUrl)
+                Image(
+                    painter = painter,
                     contentDescription = stock.name,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
+                    modifier = modifier
                         .size(40.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,
@@ -64,6 +63,22 @@ fun CardHorizontalStock(
                         )
                         .clip(CircleShape),
                 )
+//                AsyncImage(
+//                    model = ImageRequest.Builder(LocalContext.current)
+//                        .data(stock.logoUrl)
+//                        .crossfade(true)
+//                        .build(),
+////                    placeholder = painterResource(R.drawable.ic_launcher_foreground),
+//                    contentDescription = stock.name,
+//                    contentScale = ContentScale.Fit,
+//                    modifier = Modifier
+//                        .size(40.dp)
+//                        .background(
+//                            color = MaterialTheme.colorScheme.primaryContainer,
+//                            shape = CircleShape,
+//                        )
+//                        .clip(CircleShape),
+//                )
             },
         )
         Divider()

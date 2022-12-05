@@ -17,17 +17,8 @@ class StockRepositoryImpl @Inject constructor(
     private val dispatcher: DispatcherProvider
 ) : StockRepository {
 
-    //    override suspend fun getStocks() = flow {
-//        emit(State.loading())
-//
-//        val lotteries = firebaseDataSource.getStocks()
-//        emit(State.success(lotteries))
-//    }.catch {
-//        emit(State.failed(it.message.toString()))
-//    }.flowOn(dispatcher.io())
-
     companion object {
-        const val STOCKS_PER_PAGE = 20
+        const val STOCKS_PER_PAGE = 40
     }
     override fun searchStocks(query: String): Flow<PagingData<Stock>> {
         return Pager(
