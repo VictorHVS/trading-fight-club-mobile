@@ -114,7 +114,6 @@ dependencies {
     implementation(libs.gradle.hilt)
 
     implementation(libs.hilt)
-//    implementation("androidx.paging:paging-common-ktx:3.1.1")
     kapt(libs.hiltCompiler)
 
     coreLibraryDesugaring(libs.desugar)
@@ -132,6 +131,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.appCheck)
     implementation(libs.firebase.appCheckDebug)
+
+    implementation("com.google.code.gson:gson:2.9.1")
 
     implementation(libs.androidx.test.core)
     implementation(libs.androidx.test.espresso.core)

@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.presentation.screens.stocklist
+package com.victorhvs.tfc.presentation.screens.explore
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

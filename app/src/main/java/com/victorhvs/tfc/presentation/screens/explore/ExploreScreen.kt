@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.presentation.screens.stocklist
+package com.victorhvs.tfc.presentation.screens.explore
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -20,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.items
 import com.victorhvs.tfc.R
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.components.CardHorizontalStock
@@ -36,7 +35,7 @@ fun ExploreScreen(
 
     val pagingStocks = viewModel.searchedStocks.collectAsLazyPagingItems()
     val scrollBehavior =
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -63,7 +62,7 @@ fun ExploreScreen(
             Spacer(modifier = Modifier.height(4.dp))
             ExploreContent(
                 navigateToStockScreen = navigateToStockScreen,
-                pagingStocks = pagingStocks,
+                stocks = pagingStocks,
             )
         }
     }
@@ -71,28 +70,30 @@ fun ExploreScreen(
 
 @Composable
 fun ExploreContent(
-    navigateToStockScreen: (stock: Stock) -> Unit,
-    pagingStocks: LazyPagingItems<Stock>,
-    modifier: Modifier = Modifier
+    stocks: LazyPagingItems<Stock>,
+    modifier: Modifier = Modifier,
+    navigateToStockScreen: (stock: Stock) -> Unit
 ) {
-    when (pagingStocks.loadState.refresh) {
-        LoadState.Loading -> {
-            ProgressBar()
-        }
-        else -> {
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxSize(),
-            ) {
-                itemsIndexed(pagingStocks) { _, stock ->
-                    stock?.let {
-                        CardHorizontalStock(
-                            stock = stock,
-                            onStockClicked = navigateToStockScreen,
-                        )
-                    }
-                }
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize(),
+    ) {
+        items(stocks) { stock ->
+            stock?.let {
+                CardHorizontalStock(
+                    stock = stock,
+                    onStockClicked = navigateToStockScreen,
+                )
             }
+        }
+    }
+
+    stocks.apply {
+        when {
+            loadState.refresh is LoadState.Loading -> ProgressBar()
+            loadState.refresh is LoadState.Error -> println(loadState)
+            loadState.append is LoadState.Loading -> ProgressBar()
+            loadState.append is LoadState.Error -> println(loadState.append)
         }
     }
 }
