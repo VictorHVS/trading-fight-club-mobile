@@ -1,6 +1,5 @@
 package com.victorhvs.tfc.presentation.screens.stocklist
 
-import android.widget.Space
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,19 +52,18 @@ fun ExploreScreen(
         Column(
             modifier = modifier
                 .padding(paddingValues)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             SearchWidget(
-                modifier = modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = viewModel.searchQuery.value,
                 onTextChange = { viewModel.updateSearchQuery(it) },
-                onSearchClicked = { viewModel.searchStocks(it) }
+                onSearchClicked = { viewModel.searchStocks(it) },
             )
-            Spacer(modifier = modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             ExploreContent(
-                modifier = modifier,
                 navigateToStockScreen = navigateToStockScreen,
-                pagingStocks = pagingStocks
+                pagingStocks = pagingStocks,
             )
         }
     }
@@ -73,9 +71,9 @@ fun ExploreScreen(
 
 @Composable
 fun ExploreContent(
-    modifier: Modifier = Modifier,
     navigateToStockScreen: (stock: Stock) -> Unit,
-    pagingStocks: LazyPagingItems<Stock>
+    pagingStocks: LazyPagingItems<Stock>,
+    modifier: Modifier = Modifier
 ) {
     when (pagingStocks.loadState.refresh) {
         LoadState.Loading -> {
@@ -84,13 +82,13 @@ fun ExploreContent(
         else -> {
             LazyColumn(
                 modifier = modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
             ) {
                 itemsIndexed(pagingStocks) { _, stock ->
                     stock?.let {
                         CardHorizontalStock(
                             stock = stock,
-                            onStockClicked = navigateToStockScreen
+                            onStockClicked = navigateToStockScreen,
                         )
                     }
                 }

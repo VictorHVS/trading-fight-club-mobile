@@ -34,7 +34,7 @@ fun SearchWidget(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = stringResource(id = R.string.search_by_symbol)
+                contentDescription = stringResource(id = R.string.search_by_symbol),
             )
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -42,20 +42,20 @@ fun SearchWidget(
             onSearch = {
                 keyboardController?.hide()
                 onSearchClicked(text)
-            }
-        )
+            },
+        ),
     )
 }
 
 @Preview(
     showBackground = true,
-    name = "Light Mode"
+    name = "Light Mode",
 )
 @Composable
 fun SearchWidgetPreview() {
     SearchWidget(
         text = "",
         onTextChange = { },
-        onSearchClicked = { }
+        onSearchClicked = { },
     )
 }

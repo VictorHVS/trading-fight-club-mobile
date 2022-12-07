@@ -17,7 +17,7 @@ fun SetupNavGraph(navController: NavHostController) {
                 navigateToStockScreen = { _ ->
 //                    val jsonStock = Gson().toJson(stock)
 //                    navController.navigate("${StockDetailScreen.route}/${jsonStock}")
-                }
+                },
             )
         }
 //        composable(

@@ -5,12 +5,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.victorhvs.tfc.core.DispatcherProvider
-import com.victorhvs.tfc.data.datasource.FirebaseDataSource
 import com.victorhvs.tfc.data.datasource.FirebaseStocksPagingSource
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.domain.repository.StockRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class StockRepositoryImpl @Inject constructor(
     private val client: FirebaseFirestore,
@@ -27,10 +26,9 @@ class StockRepositoryImpl @Inject constructor(
                 FirebaseStocksPagingSource(
                     client = client,
                     query = query,
-                    dispatcher = dispatcher
+                    dispatcher = dispatcher,
                 )
-            }
+            },
         ).flow
     }
-
 }

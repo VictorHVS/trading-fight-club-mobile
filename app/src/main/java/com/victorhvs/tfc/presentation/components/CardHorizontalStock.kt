@@ -16,17 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import com.victorhvs.tfc.R
 import com.victorhvs.tfc.data.fake.FakeDataSource
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.extensions.gainOrLossColor
@@ -35,8 +28,8 @@ import com.victorhvs.tfc.presentation.theme.TfcTheme
 
 @Composable
 fun CardHorizontalStock(
-    stock: Stock,
     modifier: Modifier = Modifier,
+    stock: Stock,
     onStockClicked: (stock: Stock) -> Unit
 ) {
     Column(modifier = modifier.clickable { onStockClicked(stock) }) {
@@ -54,7 +47,7 @@ fun CardHorizontalStock(
                 Image(
                     painter = rememberAsyncImagePainter(stock.logoUrl),
                     contentDescription = stock.name,
-                    modifier = modifier
+                    modifier = Modifier
                         .size(40.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,

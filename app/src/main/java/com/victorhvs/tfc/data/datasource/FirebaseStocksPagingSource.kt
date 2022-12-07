@@ -1,6 +1,5 @@
 package com.victorhvs.tfc.data.datasource
 
-import androidx.compose.ui.text.toUpperCase
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,11 +39,10 @@ class FirebaseStocksPagingSource(
                 LoadResult.Page(
                     data = currentPage.toObjects(Stock::class.java),
                     prevKey = null,
-                    nextKey = nextPage
+                    nextKey = nextPage,
                 )
             } catch (e: Exception) {
                 LoadResult.Error(e)
             }
         }
-
 }

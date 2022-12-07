@@ -4,9 +4,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.victorhvs.tfc.core.DispatcherProvider
 import com.victorhvs.tfc.domain.models.Stock
+import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 interface FirebaseDataSource {
     suspend fun getStocks(): List<Stock>

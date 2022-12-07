@@ -57,7 +57,6 @@ object DI {
         dispacher: DispatcherProvider
     ): StockRepository = StockRepositoryImpl(
         dispatcher = dispacher,
-        client = client
+        client = client,
     )
-
 }
