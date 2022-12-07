@@ -17,24 +17,6 @@ class ExploreViewModel @Inject constructor(
     private val repository: StockRepository
 ) : ViewModel() {
 
-//    private val _stocks: MutableStateFlow<State<List<Stock>>> =
-//        MutableStateFlow(State.loading())
-//    val stocks: StateFlow<State<List<Stock>>> = _stocks
-
-//    init {
-//        getStocks()
-//    }
-
-//    private fun getStocks() = viewModelScope.launch {
-//        try {
-//            repository.getStocks().collect {
-//                _stocks.value = it
-//            }
-//        } catch (exception: Exception) {
-//            _stocks.value = State.failed("${exception.message}")
-//        }
-//    }
-
     private val _searchQuery = mutableStateOf("")
     val searchQuery = _searchQuery
 
@@ -57,6 +39,4 @@ class ExploreViewModel @Inject constructor(
             }
         }
     }
-
-//    val stocks = repository.searchStocks("").cachedIn(viewModelScope)
 }

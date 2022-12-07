@@ -1,5 +1,6 @@
 package com.victorhvs.tfc.data.datasource
 
+import androidx.compose.ui.text.toUpperCase
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +20,7 @@ class FirebaseStocksPagingSource(
     companion object {
         const val STOCK_REF = "stocks"
         const val STOCK_ORDER_FIELD = "uuid"
-        const val STOCKS_PER_PAGE = 20L
+        const val STOCKS_PER_PAGE = 40L
     }
 
     override fun getRefreshKey(state: PagingState<QuerySnapshot, Stock>): QuerySnapshot? = null
@@ -29,6 +30,7 @@ class FirebaseStocksPagingSource(
             try {
                 val query = client.collection(STOCK_REF)
                     .whereEqualTo("enabled", true)
+                    .whereGreaterThanOrEqualTo(STOCK_ORDER_FIELD, query.uppercase())
                     .orderBy(STOCK_ORDER_FIELD, Query.Direction.ASCENDING)
                     .limit(STOCKS_PER_PAGE)
 

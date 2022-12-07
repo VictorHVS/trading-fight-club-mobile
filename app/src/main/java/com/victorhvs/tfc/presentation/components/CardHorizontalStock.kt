@@ -51,9 +51,8 @@ fun CardHorizontalStock(
                 )
             },
             leadingContent = {
-                val painter = rememberAsyncImagePainter(stock.logoUrl)
                 Image(
-                    painter = painter,
+                    painter = rememberAsyncImagePainter(stock.logoUrl),
                     contentDescription = stock.name,
                     modifier = modifier
                         .size(40.dp)
@@ -63,22 +62,6 @@ fun CardHorizontalStock(
                         )
                         .clip(CircleShape),
                 )
-//                AsyncImage(
-//                    model = ImageRequest.Builder(LocalContext.current)
-//                        .data(stock.logoUrl)
-//                        .crossfade(true)
-//                        .build(),
-////                    placeholder = painterResource(R.drawable.ic_launcher_foreground),
-//                    contentDescription = stock.name,
-//                    contentScale = ContentScale.Fit,
-//                    modifier = Modifier
-//                        .size(40.dp)
-//                        .background(
-//                            color = MaterialTheme.colorScheme.primaryContainer,
-//                            shape = CircleShape,
-//                        )
-//                        .clip(CircleShape),
-//                )
             },
         )
         Divider()

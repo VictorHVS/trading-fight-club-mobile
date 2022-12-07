@@ -3,4 +3,5 @@
     <string name="floating_price" translatable="false">%s %s</string>
     <string name="screen_explore">Explorar</string>
     <string name="loading">Carregando</string>
+    <string name="search_by_symbol">Buscar por símbolo</string>
 </resources>
