@@ -1,6 +1,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    kotlin("kapt")
 }
 
 android {
@@ -87,25 +91,39 @@ android {
 dependencies {
 
     implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycleRuntime)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.foundation.layout)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material.iconsExtended)
+    implementation(libs.compose.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.navigationHilt)
+//    implementation(libs.compose.paging3)
+    implementation("androidx.paging:paging-compose:1.0.0-alpha16")
 
     implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.gradle.detekt)
-//    implementation(libs.gradle.sonarqube)
+    implementation(libs.gradle.hilt)
+
+    implementation(libs.hilt)
+//    implementation("androidx.paging:paging-common-ktx:3.1.1")
+    kapt(libs.hiltCompiler)
 
     coreLibraryDesugaring(libs.desugar)
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
     implementation(libs.coil.kt.svg)
+
+    implementation(libs.lifecycle.viewmodel)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

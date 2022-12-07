@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.ui.theme
+package com.victorhvs.tfc.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -66,3 +66,6 @@ val dark_scrim = Color(0xFF000000)
 
 val seed = Color(0xFF000000)
 val red = Color(0xFFE33A3A)
+
+val gain = Color(0xFF41B450)
+val loss = Color(0xFFE33A3A)

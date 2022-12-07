@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.ui.theme
+package com.victorhvs.tfc.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -75,7 +75,7 @@ private val DarkColorScheme = darkColorScheme(
 @Composable
 fun TfcTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
