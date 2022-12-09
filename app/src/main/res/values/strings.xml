@@ -4,4 +4,8 @@
     <string name="screen_explore">Explorar</string>
     <string name="loading">Carregando</string>
     <string name="search_by_symbol">Buscar por símbolo</string>
+    <string name="screen_wallet">Carteira</string>
+    <string name="screen_rank">Rank</string>
+    <string name="screen_profile">Perfil</string>
+    <string name="navigation_icon_description">Icone de navegação</string>
 </resources>

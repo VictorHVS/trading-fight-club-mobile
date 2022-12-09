@@ -101,12 +101,14 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material.iconsExtended)
     implementation(libs.compose.runtime)
+    implementation(libs.compose.material)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
     implementation(libs.compose.navigation)
     implementation(libs.compose.navigationHilt)
 //    implementation(libs.compose.paging3)
     implementation("androidx.paging:paging-compose:1.0.0-alpha16")
+    implementation("com.google.accompanist:accompanist-navigation-material:0.28.0")
 
     implementation(libs.accompanist.systemuicontroller)
 
@@ -132,7 +134,7 @@ dependencies {
     implementation(libs.firebase.appCheck)
     implementation(libs.firebase.appCheckDebug)
 
-    implementation("com.google.code.gson:gson:2.9.1")
+//    implementation("com.google.code.gson:gson:2.9.1")
 
     implementation(libs.androidx.test.core)
     implementation(libs.androidx.test.espresso.core)

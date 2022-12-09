@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -19,8 +20,10 @@ import com.victorhvs.tfc.domain.models.Stock
 
 @Composable
 fun StockScreen(
-    stock: Stock,
-    navigateBack: () -> Unit
+    stockId: String,
+    stockName: String,
+    navigateBack: () -> Unit,
+    showSheet: () -> Unit
 ) {
 
     val scrollBehavior =
@@ -31,7 +34,7 @@ fun StockScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stock.name)
+                    Text(text = stockName)
                 },
                 scrollBehavior = scrollBehavior,
                 navigationIcon = {
@@ -48,8 +51,11 @@ fun StockScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize(),
+                .fillMaxSize()
         ) {
+            Button(onClick = showSheet) {
+                Text("Show sheet!")
+            }
 //            todo: Header()
 //            todo: Chart()
 //            todo: userStats()
