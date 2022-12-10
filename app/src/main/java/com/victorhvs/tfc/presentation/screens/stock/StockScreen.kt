@@ -20,6 +20,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,10 +30,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.victorhvs.tfc.R
 import com.victorhvs.tfc.data.fake.FakeDataSource
+import com.victorhvs.tfc.domain.models.FirestoreState
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.components.LogoRounded
+import com.victorhvs.tfc.presentation.components.ProgressBar
 import com.victorhvs.tfc.presentation.extensions.gainOrLossColor
 import com.victorhvs.tfc.presentation.extensions.toFormatedCurrency
 import com.victorhvs.tfc.presentation.theme.TfcTheme
@@ -42,9 +47,13 @@ import com.victorhvs.tfc.presentation.theme.spacing
 fun StockScreen(
     stockId: String,
     stockName: String,
+    viewModel: StockViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
-    showSheet: () -> Unit
+    showSheet: () -> Unit,
 ) {
+
+    val stockState by viewModel.stockState.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,25 +71,32 @@ fun StockScreen(
             )
         },
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-            val stock = FakeDataSource.flry3
-            Header(stock = stock)
-            Chart(modifier = Modifier.weight(1f))
-            val userHasStock = true
-            if (userHasStock) {
-                UserStock(
-                    amount = 10,
-                    priceAvg = 300.19,
-                    portfolioSum = 3_001.90,
-                    profitAbsolute = 187.0,
-                    profitRate = 2.01
-                )
+
+        when(stockState) {
+            is FirestoreState.Failed -> navigateBack()
+            is FirestoreState.Loading -> ProgressBar()
+            is FirestoreState.Success -> {
+                Column(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                ) {
+                    val stock = (stockState as FirestoreState.Success<Stock?>).data ?: return@Scaffold
+                    Header(stock = stock)
+                    Chart(modifier = Modifier.weight(1f))
+                    val userHasStock = true
+                    if (userHasStock) {
+                        UserStock(
+                            amount = 10,
+                            priceAvg = 300.19,
+                            portfolioSum = 3_001.90,
+                            profitAbsolute = 187.0,
+                            profitRate = 2.01
+                        )
+                    }
+                    BuySellButtons(userHasStock, showSheet = showSheet)
+                }
             }
-            BuySellButtons(userHasStock, showSheet = showSheet)
         }
     }
 }

@@ -19,7 +19,7 @@ class FirebaseStocksPagingSource(
     companion object {
         const val STOCK_REF = "stocks"
         const val STOCK_ORDER_FIELD = "uuid"
-        const val STOCKS_PER_PAGE = 40L
+        const val STOCKS_PER_PAGE = 20L
     }
 
     override fun getRefreshKey(state: PagingState<QuerySnapshot, Stock>): QuerySnapshot? = null
