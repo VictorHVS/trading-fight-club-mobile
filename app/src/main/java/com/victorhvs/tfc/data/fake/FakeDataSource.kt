@@ -28,7 +28,7 @@ object FakeDataSource {
         industry = "Diagnostics & Research",
         logoUrl = "https://logo.clearbit.com/ri.fleury.com.br",
         name = "FLEURY ON NM",
-        price = -17.72,
+        price = 17.72,
         priceAbsoluteFloating = -0.24,
         priceFloating = 1.37,
         sector = "Healthcare",

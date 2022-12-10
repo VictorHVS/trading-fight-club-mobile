@@ -8,4 +8,7 @@
     <string name="screen_rank">Rank</string>
     <string name="screen_profile">Perfil</string>
     <string name="navigation_icon_description">Icone de navegação</string>
+    <string name="logo_rounded">Logomarca arredondada</string>
+    <string name="buy_action">Comprar</string>
+    <string name="sell_action">Vender</string>
 </resources>
