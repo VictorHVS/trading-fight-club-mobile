@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.CandlestickChart
+import androidx.compose.material.icons.rounded.ShowChart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,12 +36,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.victorhvs.tfc.R
 import com.victorhvs.tfc.data.fake.FakeDataSource.weekPrice
 import com.victorhvs.tfc.domain.enums.FirestoreState
@@ -100,13 +104,12 @@ fun StockScreen(
                     Chart(
                         timeseriesState = timeseriesState,
                         modifier = Modifier.weight(1f),
-                        color = stock.priceAbsoluteFloating.gainOrLossColor(),
-                        onClick = { interval ->
+                        lineColor = stock.priceAbsoluteFloating.gainOrLossColor()
+                    ) { interval ->
 //                            LaunchedEffect(Unit) {
-                            viewModel.fetchTimeSeries(stockId, interval)
+                        viewModel.fetchTimeSeries(stockId, interval)
 //                            }
-                        }
-                    )
+                    }
 
                     val userHasStock = true
                     if (userHasStock) {
@@ -129,20 +132,26 @@ fun StockScreen(
 fun Chart(
     timeseriesState: FirestoreState<List<TimeSeries?>>,
     modifier: Modifier = Modifier,
-    color: Color = Color.Black,
+    lineColor: Color = Color.Black,
     onClick: (Interval) -> Unit
 ) {
+
+    var isLineChart by remember { mutableStateOf(true) }
+    var selectedPeriod: Interval by remember { mutableStateOf(Interval.OneWeek()) }
+
     Column(modifier = modifier) {
         when (timeseriesState) {
             is FirestoreState.Failed -> {}
             is FirestoreState.Loading -> ProgressBar()
             is FirestoreState.Success -> {
-                timeseriesState.data?.let {
+                if (isLineChart) {
                     LineChart(
                         modifier = modifier,
                         timeSeries = timeseriesState.data,
-                        lineColor = color
+                        lineColor = lineColor
                     )
+                } else {
+                    CandleChart()
                 }
             }
         }
@@ -150,28 +159,36 @@ fun Chart(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            TextButton(
-                onClick = { onClick(Interval.Today()) }
-            ) {
-                Text(text = "1D")
+
+            Interval.allIntervals().forEach { interval ->
+                TextButton(
+                    onClick = {
+                        onClick(interval)
+                        selectedPeriod = interval
+                    }
+                ) {
+                    val color =
+                        if (selectedPeriod == interval) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+                    Text(
+                        text = interval.period,
+                        color = color
+                    )
+                }
             }
-            TextButton(onClick = { onClick(Interval.OneWeek()) }) {
-                Text(text = "1W")
-            }
-            TextButton(onClick = { onClick(Interval.OneMonth()) }) {
-                Text(text = "1M")
-            }
-            TextButton(onClick = { onClick(Interval.OneYear()) }) {
-                Text(text = "1A")
-            }
-            TextButton(onClick = { onClick(Interval.Max()) }) {
-                Text(text = "Máx.")
-            }
-            TextButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Outlined.CandlestickChart, contentDescription = null)
+
+            TextButton(onClick = { isLineChart = !isLineChart }) {
+                if (isLineChart)
+                    Icon(imageVector = Icons.Outlined.CandlestickChart, contentDescription = null)
+                else
+                    Icon(imageVector = Icons.Rounded.ShowChart, contentDescription = null)
             }
         }
     }
+}
+
+@Composable
+fun CandleChart() {
+
 }
 
 @Composable
@@ -298,10 +315,11 @@ fun Header(
 @Composable
 fun LineChart(
     modifier: Modifier = Modifier,
-    timeSeries: List<TimeSeries?>?,
+    timeSeries: List<TimeSeries?>,
     lineColor: Color = Color.Black
 ) {
     val textSize = 12f
+    val onPrimaryContainer = MaterialTheme.colorScheme.onPrimaryContainer.toArgb()
 
     AndroidView(
         modifier = modifier
@@ -312,7 +330,8 @@ fun LineChart(
         update = { lineChart ->
             var lineData: LineData? = null
 
-            val entries = timeSeries!!.filter { !it!!.close.isNaN() }.mapIndexed { index, item ->
+
+            val entries = timeSeries.filter { !it!!.close.isNaN() }.mapIndexed { index, item ->
                 val value = floor(item!!.close * 100) / 100
                 Entry(
                     index.toFloat(),
@@ -320,9 +339,16 @@ fun LineChart(
                     value.toFloat()
                 )
             }
+
+            val leftAxisFormatter = object : ValueFormatter() {
+                override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                    return "$value VICTOR\nAEHO"
+                }
+            }
+
             val dataset = LineDataSet(entries, "").apply {
                 color = lineColor.toArgb()
-//                valueFormatter = dataSetFormatter
+                valueFormatter = leftAxisFormatter
                 lineWidth = 1f
                 setDrawCircles(false)
                 setDrawValues(false)
@@ -352,7 +378,7 @@ fun LineChart(
                     setDrawBorders(false)
                     setDrawAxisLine(false)
 //                    textColor = onSurfaceTextColor
-//                    valueFormatter = xAxisFormatter
+                    valueFormatter = leftAxisFormatter
                 }
                 axisLeft.apply {
                     setTextSize(textSize)
@@ -364,15 +390,15 @@ fun LineChart(
                     setDrawLabels(false)
                     setDrawBorders(false)
                     setDrawAxisLine(false)
-//                    valueFormatter = leftAxisFormatter
+                    valueFormatter = leftAxisFormatter
                 }
                 axisRight.apply {
 //                    axisMinimum = 0f
                     setDrawLabels(false)
                     setDrawGridLines(false)
-                    setDrawLabels(false)
                     setDrawBorders(false)
                     setDrawAxisLine(false)
+                    valueFormatter = leftAxisFormatter
                 }
 
                 data = lineData
@@ -383,19 +409,22 @@ fun LineChart(
                 val highest = entries.maxBy { it.y }.y
                 val ll1 = LimitLine(highest, "R$${highest.toFormatedCurrency()}")
                 ll1.lineWidth = 1f
-                ll1.lineColor = Color.Gray.toArgb()
+                ll1.lineColor = onPrimaryContainer
                 ll1.enableDashedLine(10f, 10f, 0f)
                 ll1.labelPosition = LimitLabelPosition.RIGHT_TOP
                 ll1.textSize = 10f
+                ll1.textColor = onPrimaryContainer
 //                ll1.typeface = tfRegular
 
-//                val avg = entries.minBy { it.y }.y
-//                val ll3 = LimitLine(avg, "R$${lowest.toFormatedCurrency()}")
-//                ll3.lineWidth = 1f
-//                ll3.enableDashedLine(10f, 10f, 0f)
-//                ll3.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
-//                ll3.textSize = 10f
-//                ll3.lineColor = Color.Gray.toArgb()
+                val avg = floor(timeSeries.filter { !it!!.close.isNaN() }.map { it!!.close }
+                    .average() * 100) / 100
+                val ll3 = LimitLine(avg.toFloat(), "R$${avg.toFormatedCurrency()}")
+                ll3.lineWidth = 1f
+                ll3.enableDashedLine(10f, 10f, 0f)
+                ll3.labelPosition = LimitLabelPosition.RIGHT_TOP
+                ll3.textSize = 10f
+                ll3.lineColor = onPrimaryContainer
+                ll3.textColor = onPrimaryContainer
 
                 val lowest = entries.minBy { it.y }.y
                 val ll2 = LimitLine(lowest, "R$${lowest.toFormatedCurrency()}")
@@ -403,12 +432,14 @@ fun LineChart(
                 ll2.enableDashedLine(10f, 10f, 0f)
                 ll2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
                 ll2.textSize = 10f
-                ll2.lineColor = Color.Gray.toArgb()
+                ll2.textColor = onPrimaryContainer
+                ll2.lineColor = onPrimaryContainer
 //                ll2.typeface = tfRegular
 
 
                 // add limit lines
                 axisLeft.addLimitLine(ll1)
+                axisRight.addLimitLine(ll3)
                 axisRight.addLimitLine(ll2)
 
                 invalidate()
@@ -423,6 +454,11 @@ fun StockScreenPrev() {
 //        StockScreen(stockId = "flry3", stockName = "Fleury", navigateBack = { }) {
 //
 //        }
-        LineChart(Modifier.fillMaxSize(), weekPrice)
+//        LineChart(Modifier.fillMaxSize(), weekPrice)
+        Chart(
+            timeseriesState = FirestoreState.success(weekPrice)
+        ) {
+
+        }
     }
 }

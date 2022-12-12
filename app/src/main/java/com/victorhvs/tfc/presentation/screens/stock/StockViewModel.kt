@@ -36,7 +36,7 @@ class StockViewModel @Inject constructor(
                     _stockState.value = it
                 }
             }
-            fetchTimeSeries(stockId, Interval.OneMonth())
+            fetchTimeSeries(stockId, Interval.OneWeek())
         }
     }
 
@@ -47,8 +47,6 @@ class StockViewModel @Inject constructor(
             }
         }
     }
-
-//
 
 //    fun teste() {
 //        viewModelScope.launch {

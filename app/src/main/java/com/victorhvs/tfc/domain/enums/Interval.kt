@@ -8,6 +8,18 @@ sealed class Interval {
     abstract val period: String
     abstract val interval: String
 
+    companion object {
+        fun allIntervals() : List<Interval> {
+            return listOf(
+                Today(),
+                OneWeek(),
+                OneMonth(),
+                OneYear(),
+                Max()
+            )
+        }
+    }
+
     data class Today(override val period: String = "1D", override val interval: String = "30m") : Interval() {
         override fun periodMilliseconds(): String {
             val calendar = Calendar.getInstance()
@@ -40,9 +52,7 @@ sealed class Interval {
         }
     }
 
-    data class Max(override val period: String = "MAX", override val interval: String = "1d") : Interval() {
-        override fun periodMilliseconds(): String? {
-            return null
-        }
+    data class Max(override val period: String = "Máx.", override val interval: String = "1d") : Interval() {
+        override fun periodMilliseconds() = null
     }
 }
