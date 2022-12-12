@@ -20,44 +20,26 @@ import com.victorhvs.tfc.presentation.screens.explore.ExploreScreen
 import com.victorhvs.tfc.presentation.screens.home.BottomBarScreen
 import com.victorhvs.tfc.presentation.screens.stock.StockScreen
 import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
-    println(navController.backQueue)
     NavHost(
         navController = navController,
         route = Graph.HOME,
         startDestination = BottomBarScreen.Wallet.route
     ) {
         composable(route = BottomBarScreen.Wallet.route) {
-//            ScreenContent(
-//                name = BottomBarScreen.Home.route,
-//                onClick = {
-//                    navController.navigate(Graph.DETAILS)
-//                }
-//            )
         }
         composable(route = BottomBarScreen.Explore.route) {
             ExploreScreen(navigateToStockScreen = { stock ->
-//                val jsonString = Gson().toJson(stock)
-//                navController.navigate("${Graph.DETAILS}/${stock.uuid}")
                 navController.navigate("${StockScreen.Detail.route}/${stock.uuid}")
             }
             )
         }
         composable(route = BottomBarScreen.Rank.route) {
-//            ScreenContent(
-//                name = BottomBarScreen.Settings.route,
-//                onClick = { }
-//            )
         }
         composable(route = BottomBarScreen.Profile.route) {
-//            ScreenContent(
-//                name = BottomBarScreen.Profile.route,
-//                onClick = { }
-//            )
         }
         detailsNavGraph(navController = navController)
     }
@@ -77,7 +59,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 }
             )
         ) { backStackEntry ->
-            val stockId : String? = backStackEntry.arguments?.getString("stockId")
+            val stockId: String? = backStackEntry.arguments?.getString("stockId")
             if (stockId.isNullOrBlank()) {
                 navController.popBackStack()
                 return@composable
@@ -116,12 +98,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
             }
         }
         composable(route = StockScreen.BuySell.route) {
-//            ScreenContent(name = DetailsScreen.Overview.route) {
-//                navController.popBackStack(
-//                    route = DetailsScreen.Information.route,
-//                    inclusive = false
-//                )
-//            }
         }
     }
 }

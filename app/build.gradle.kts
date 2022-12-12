@@ -106,10 +106,8 @@ dependencies {
     implementation(libs.compose.material3.windowSizeClass)
     implementation(libs.compose.navigation)
     implementation(libs.compose.navigationHilt)
-//    implementation(libs.compose.paging3)
-    implementation("androidx.paging:paging-compose:1.0.0-alpha16")
-    implementation("com.google.accompanist:accompanist-navigation-material:0.28.0")
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.compose.paging3)
+    implementation(libs.mpaandroidchart)
 
     implementation(libs.accompanist.systemuicontroller)
 
@@ -130,13 +128,11 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
-    implementation("com.google.android.gms:play-services-auth:20.4.0")
+    implementation(libs.gp.googleAuthService)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.appCheck)
     implementation(libs.firebase.appCheckDebug)
-
-//    implementation("com.google.code.gson:gson:2.9.1")
 
     implementation(libs.androidx.test.core)
     implementation(libs.androidx.test.espresso.core)
@@ -147,5 +143,4 @@ dependencies {
     api(libs.compose.ui.test)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.testManifest)
-    implementation(kotlin("reflect"))
 }

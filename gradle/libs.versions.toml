@@ -8,6 +8,7 @@ junit = "4.13.2"
 ksp = "1.7.10-1.0.6"
 firebaseCrashlyticsPlugin = "2.9.2"
 googleServices = "4.3.14"
+gmsAuthService = "20.4.0"
 
 coverage-engine = "1.0.686"
 
@@ -55,6 +56,8 @@ androidxTestRules = "1.5.0"
 androidxUiAutomator = "2.2.0"
 androidxEspresso = "3.5.0"
 
+
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradle" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradle" }
@@ -69,6 +72,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 [libraries]
 gp-firebaseCrashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
 gp-googleServices = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+gp-googleAuthService = { module = "com.google.android.gms:play-services-auth", version.ref = "gmsAuthService" }
 
 # production libraries
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -79,6 +83,7 @@ coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 accompanist-swipeRefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "composeAccompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "composeAccompanist" }
+accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "composeAccompanist" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
@@ -88,7 +93,7 @@ compose-material = { group = "androidx.compose.material", name = "material" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-compose-paging3 = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha14" }
+compose-paging3 = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha16" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.5.1" }
 compose-navigationHilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "composeNavigationHilt" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.5.1" }
@@ -108,6 +113,8 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 kotlin-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "kotlinSerializationConverter" }
 kotlin-coroutine-playservice = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinCoroutinePlayServices" }
 lifecycleViewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+mpaandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version="v3.1.0"}
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBoM" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }

@@ -7,7 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.victorhvs.tfc.core.DispatcherProvider
 import com.victorhvs.tfc.data.datasource.FirebaseStocksPagingSource
-import com.victorhvs.tfc.data.extensions.getStatefulCollection
 import com.victorhvs.tfc.data.extensions.observeStatefulCollection
 import com.victorhvs.tfc.data.extensions.observeStatefulDoc
 import com.victorhvs.tfc.domain.enums.FirestoreState
@@ -50,26 +49,14 @@ class StockRepositoryImpl @Inject constructor(
         interval: Interval
     ): Flow<FirestoreState<List<TimeSeries?>>> {
         val path = "$STOCK_REF/$stockId/${interval.interval}"
-
         var query: Query = client.collection(path)
 
         interval.periodMilliseconds()?.let {
-            query = client.collection(path).whereGreaterThanOrEqualTo("uuid", it)
+            query = client.collection(path).whereGreaterThanOrEqualTo(STOCK_ORDER_FIELD, it)
         }
 
         return observeStatefulCollection(query)
 
     }
-
-//    return withContext(dispatcher.io()) {
-//        val snapshot = client.collection(FirebaseDataSourceImp.STOCK_REF)
-//            .whereEqualTo("enabled", true)
-//            .orderBy(FirebaseDataSourceImp.STOCK_ORDER_FIELD, Query.Direction.ASCENDING)
-//            .limit(FirebaseDataSourceImp.STOCKS_PER_PAGE)
-//            .get()
-//            .await()
-//
-//        snapshot.toObjects(Stock::class.java)
-//    }
 
 }

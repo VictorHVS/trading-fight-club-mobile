@@ -1,5 +1,6 @@
 package com.victorhvs.tfc.presentation.screens.explore
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,7 +30,6 @@ import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.components.CardHorizontalStock
 import com.victorhvs.tfc.presentation.components.ProgressBar
 import com.victorhvs.tfc.presentation.components.SearchWidget
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -109,7 +110,11 @@ fun ExploreContent(
             loadState.refresh is LoadState.Loading -> ProgressBar()
             loadState.refresh is LoadState.Error -> println(loadState)
             loadState.append is LoadState.Loading -> ProgressBar()
-            loadState.append is LoadState.Error -> println(loadState.append)
+            loadState.append is LoadState.Error -> Toast.makeText(
+                LocalContext.current,
+                loadState.append.toString(),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

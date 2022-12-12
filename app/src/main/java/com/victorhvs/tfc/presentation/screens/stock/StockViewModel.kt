@@ -47,20 +47,4 @@ class StockViewModel @Inject constructor(
             }
         }
     }
-
-//    fun teste() {
-//        viewModelScope.launch {
-//            combine(
-//                repository.fetchTimeSeries("", Intervals.OneMonth()),
-//                repository.fetchStock("")
-//            ) { timeseries, stock ->
-//                StockUiState(stock, timeseries)
-//            }
-//        }
-//    }
 }
-
-//data class StockUiState(
-//    val stock: Stock,
-//    val timeseries: List<TimeSeries>
-//)

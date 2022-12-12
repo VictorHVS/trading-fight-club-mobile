@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.victorhvs.tfc.presentation.navigation.RootNavigationGraph
 import com.victorhvs.tfc.presentation.theme.TfcTheme
@@ -16,7 +15,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            WindowCompat.setDecorFitsSystemWindows(window, false)
             TfcTheme {
                 RootNavigationGraph(navController = rememberNavController())
             }
