@@ -323,7 +323,7 @@ fun LineChart(
             val dataset = LineDataSet(entries, "").apply {
                 color = lineColor.toArgb()
 //                valueFormatter = dataSetFormatter
-                lineWidth = 2f
+                lineWidth = 1f
                 setDrawCircles(false)
                 setDrawValues(false)
             }
@@ -380,16 +380,27 @@ fun LineChart(
 //                setVisibleXRangeMaximum(entries.size.div(3).toFloat())
 //                moveViewToX(data.entryCount.toFloat())
 
-                val ll1 = LimitLine(entries.maxBy { it.y }.y, "Upper Limit")
-                ll1.lineWidth = 2f
-                ll1.enableDashedLine(20f, 2f, 0f)
+                val highest = entries.maxBy { it.y }.y
+                val ll1 = LimitLine(highest, "R$${highest.toFormatedCurrency()}")
+                ll1.lineWidth = 1f
+                ll1.lineColor = Color.Gray.toArgb()
+                ll1.enableDashedLine(10f, 10f, 0f)
                 ll1.labelPosition = LimitLabelPosition.RIGHT_TOP
                 ll1.textSize = 10f
 //                ll1.typeface = tfRegular
 
-                val ll2 = LimitLine(entries.minBy { it.y }.y, "Lower Limit")
-                ll2.lineWidth = 2f
-                ll2.enableDashedLine(20f, 2f, 0f)
+//                val avg = entries.minBy { it.y }.y
+//                val ll3 = LimitLine(avg, "R$${lowest.toFormatedCurrency()}")
+//                ll3.lineWidth = 1f
+//                ll3.enableDashedLine(10f, 10f, 0f)
+//                ll3.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
+//                ll3.textSize = 10f
+//                ll3.lineColor = Color.Gray.toArgb()
+
+                val lowest = entries.minBy { it.y }.y
+                val ll2 = LimitLine(lowest, "R$${lowest.toFormatedCurrency()}")
+                ll2.lineWidth = 1f
+                ll2.enableDashedLine(10f, 10f, 0f)
                 ll2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
                 ll2.textSize = 10f
                 ll2.lineColor = Color.Gray.toArgb()
