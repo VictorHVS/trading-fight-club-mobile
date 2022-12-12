@@ -46,10 +46,10 @@ object FakeDataSource {
     val weekPrice =
         listOf(
             timeSeries.copy(),
-            timeSeries.copy(close = 2.0),
-            timeSeries.copy(close = 1.0),
-            timeSeries.copy(close = 3.0),
-            timeSeries.copy(close = 1.0),
-            timeSeries.copy(close = 5.0),
+            timeSeries.copy(close = 2.0, high = 3.0, low = 1.0, open = 1.0),
+            timeSeries.copy(close = 5.0, high = 10.0, low = 3.0, open = 1.0),
+            timeSeries.copy(close = 3.0, high = 10.0, low = 1.0, open = 6.0),
+            timeSeries.copy(close = 1.0, high = 3.0, low = 1.0, open = 1.0),
+            timeSeries.copy(close = 5.0, high = 3.0, low = 1.0, open = 1.0),
         )
 }

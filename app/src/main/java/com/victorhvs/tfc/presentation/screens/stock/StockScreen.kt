@@ -1,5 +1,6 @@
 package com.victorhvs.tfc.presentation.screens.stock
 
+import android.graphics.Paint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,11 +36,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.CandleData
+import com.github.mikephil.charting.data.CandleDataSet
+import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -55,6 +61,8 @@ import com.victorhvs.tfc.presentation.components.ProgressBar
 import com.victorhvs.tfc.presentation.extensions.gainOrLossColor
 import com.victorhvs.tfc.presentation.extensions.toFormatedCurrency
 import com.victorhvs.tfc.presentation.theme.TfcTheme
+import com.victorhvs.tfc.presentation.theme.gain
+import com.victorhvs.tfc.presentation.theme.loss
 import com.victorhvs.tfc.presentation.theme.spacing
 import kotlin.math.floor
 
@@ -151,7 +159,10 @@ fun Chart(
                         lineColor = lineColor
                     )
                 } else {
-                    CandleChart()
+                    CandleChart(
+                        modifier = modifier,
+                        timeSeries = timeseriesState.data
+                    )
                 }
             }
         }
@@ -184,11 +195,6 @@ fun Chart(
             }
         }
     }
-}
-
-@Composable
-fun CandleChart() {
-
 }
 
 @Composable
@@ -330,13 +336,12 @@ fun LineChart(
         update = { lineChart ->
             var lineData: LineData? = null
 
-
             val entries = timeSeries.filter { !it!!.close.isNaN() }.mapIndexed { index, item ->
-                val value = floor(item!!.close * 100) / 100
+//                val value = floor(item!!.close * 100) / 100
                 Entry(
                     index.toFloat(),
 //                    item!!.close.toFloat()
-                    value.toFloat()
+                    item!!.close.toFloat()
                 )
             }
 
@@ -406,45 +411,149 @@ fun LineChart(
 //                setVisibleXRangeMaximum(entries.size.div(3).toFloat())
 //                moveViewToX(data.entryCount.toFloat())
 
-                val highest = entries.maxBy { it.y }.y
-                val ll1 = LimitLine(highest, "R$${highest.toFormatedCurrency()}")
-                ll1.lineWidth = 1f
-                ll1.lineColor = onPrimaryContainer
-                ll1.enableDashedLine(10f, 10f, 0f)
-                ll1.labelPosition = LimitLabelPosition.RIGHT_TOP
-                ll1.textSize = 10f
-                ll1.textColor = onPrimaryContainer
+                if (entries.isNotEmpty()) {
+                    val highest = entries.maxBy { it.y }.y
+                    val ll1 = LimitLine(highest, "R$${highest.toFormatedCurrency()}")
+                    ll1.lineWidth = 1f
+                    ll1.lineColor = onPrimaryContainer
+                    ll1.enableDashedLine(10f, 10f, 0f)
+                    ll1.labelPosition = LimitLabelPosition.RIGHT_TOP
+                    ll1.textSize = 10f
+                    ll1.textColor = onPrimaryContainer
 //                ll1.typeface = tfRegular
 
-                val avg = floor(timeSeries.filter { !it!!.close.isNaN() }.map { it!!.close }
-                    .average() * 100) / 100
-                val ll3 = LimitLine(avg.toFloat(), "R$${avg.toFormatedCurrency()}")
-                ll3.lineWidth = 1f
-                ll3.enableDashedLine(10f, 10f, 0f)
-                ll3.labelPosition = LimitLabelPosition.RIGHT_TOP
-                ll3.textSize = 10f
-                ll3.lineColor = onPrimaryContainer
-                ll3.textColor = onPrimaryContainer
+                    val avg = floor(timeSeries.filter { !it!!.close.isNaN() }.map { it!!.close }
+                        .average() * 100) / 100
+                    val ll3 = LimitLine(avg.toFloat(), "R$${avg.toFormatedCurrency()}")
+                    ll3.lineWidth = 1f
+                    ll3.enableDashedLine(10f, 10f, 0f)
+                    ll3.labelPosition = LimitLabelPosition.RIGHT_TOP
+                    ll3.textSize = 10f
+                    ll3.lineColor = onPrimaryContainer
+                    ll3.textColor = onPrimaryContainer
 
-                val lowest = entries.minBy { it.y }.y
-                val ll2 = LimitLine(lowest, "R$${lowest.toFormatedCurrency()}")
-                ll2.lineWidth = 1f
-                ll2.enableDashedLine(10f, 10f, 0f)
-                ll2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
-                ll2.textSize = 10f
-                ll2.textColor = onPrimaryContainer
-                ll2.lineColor = onPrimaryContainer
+                    val lowest = entries.minBy { it.y }.y
+                    val ll2 = LimitLine(lowest, "R$${lowest.toFormatedCurrency()}")
+                    ll2.lineWidth = 1f
+                    ll2.enableDashedLine(10f, 10f, 0f)
+                    ll2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
+                    ll2.textSize = 10f
+                    ll2.textColor = onPrimaryContainer
+                    ll2.lineColor = onPrimaryContainer
 //                ll2.typeface = tfRegular
 
 
-                // add limit lines
-                axisLeft.addLimitLine(ll1)
-                axisRight.addLimitLine(ll3)
-                axisRight.addLimitLine(ll2)
+                    // add limit lines
+                    axisLeft.addLimitLine(ll1)
+                    axisRight.addLimitLine(ll3)
+                    axisRight.addLimitLine(ll2)
+                }
 
                 invalidate()
             }
         })
+}
+
+@Composable
+fun CandleChart(
+    modifier: Modifier = Modifier,
+    timeSeries: List<TimeSeries?>
+) {
+    val textSize = 12f
+    val onPrimaryContainer = MaterialTheme.colorScheme.onPrimaryContainer.toArgb()
+    val primaryColor = MaterialTheme.colorScheme.primary.toArgb()
+    val gain = gain.toArgb()
+    val loss = loss.toArgb()
+
+    AndroidView(
+        modifier = modifier
+            .fillMaxWidth(),
+        factory = { ctx ->
+            CandleStickChart(ctx)
+        },
+        update = { candleChart ->
+            var candleData: CandleData? = null
+
+            val entries = timeSeries.filter {
+                !it!!.close.isNaN() &&
+                !it.high.isNaN() &&
+                !it.low.isNaN() &&
+                !it.open.isNaN()
+            }.mapIndexed { index, item ->
+                item?.let {
+                    CandleEntry(
+                        index.toFloat(),
+                        item.high.toFloat(),
+                        item.low.toFloat(),
+                        item.open.toFloat(),
+                        item.close.toFloat()
+                    )
+                }
+            }
+
+            val dataset = CandleDataSet(entries, "").apply {
+                setDrawIcons(false)
+                setDrawValues(false)
+                axisDependency = AxisDependency.RIGHT
+//        set1.setColor(Color.rgb(80, 80, 80));
+                //        set1.setColor(Color.rgb(80, 80, 80));
+                shadowColor = primaryColor
+                shadowWidth = 0.7f
+                decreasingColor = loss
+                decreasingPaintStyle = Paint.Style.FILL_AND_STROKE
+                increasingColor = gain
+                increasingPaintStyle = Paint.Style.FILL_AND_STROKE
+                neutralColor = primaryColor
+            }
+            candleData = CandleData(dataset)
+
+            candleChart.apply {
+//                resetTracking()
+
+                legend.isEnabled = false
+                setDrawGridBackground(false)
+                setDrawBorders(false)
+                setPinchZoom(false)
+                setScaleEnabled(false)
+//                setVisibleXRangeMaximum(2f)
+                isDragEnabled = true
+                description.isEnabled = false
+
+                xAxis.apply {
+//                    granularity = 1f
+//                    isGranularityEnabled = true
+                    setTextSize(textSize)
+                    position = XAxis.XAxisPosition.BOTTOM
+                    setDrawGridLines(false)
+                    setDrawLabels(false)
+                    setDrawBorders(false)
+                    setDrawAxisLine(false)
+//                    textColor = onSurfaceTextColor
+                }
+                axisLeft.apply {
+                    setTextSize(textSize)
+//                    textColor = onSurfaceTextColor
+//                    axisMinimum = 0f
+//                    granularity = 1f
+                    isGranularityEnabled = true
+                    setDrawGridLines(false)
+                    setDrawLabels(false)
+                    setDrawBorders(false)
+                    setDrawAxisLine(false)
+                }
+                axisRight.apply {
+//                    axisMinimum = 0f
+                    setDrawLabels(false)
+                    setDrawGridLines(false)
+                    setDrawBorders(false)
+                    setDrawAxisLine(false)
+                }
+
+                data = candleData
+                invalidate()
+            }
+        }
+    )
 }
 
 @Preview(showBackground = true)
@@ -455,10 +564,8 @@ fun StockScreenPrev() {
 //
 //        }
 //        LineChart(Modifier.fillMaxSize(), weekPrice)
-        Chart(
-            timeseriesState = FirestoreState.success(weekPrice)
-        ) {
-
-        }
+        CandleChart(
+            timeSeries = weekPrice
+        )
     }
 }
