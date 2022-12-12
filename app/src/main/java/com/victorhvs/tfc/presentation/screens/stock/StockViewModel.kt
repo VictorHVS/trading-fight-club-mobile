@@ -3,14 +3,14 @@ package com.victorhvs.tfc.presentation.screens.stock
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
-import com.victorhvs.tfc.domain.models.FirestoreState
+import com.victorhvs.tfc.domain.enums.FirestoreState
+import com.victorhvs.tfc.domain.enums.Interval
 import com.victorhvs.tfc.domain.models.Stock
+import com.victorhvs.tfc.domain.models.TimeSeries
 import com.victorhvs.tfc.domain.repository.StockRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,32 +20,49 @@ class StockViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-//    val stockState: Flow<FirestoreState<Stock?>> =
-//        repository.fetchStock(savedStateHandle.get<String>("uuid")!!)
-
     private val _stockState = MutableStateFlow<FirestoreState<Stock?>>(FirestoreState.loading())
     val stockState = _stockState
 
+    private val _timeseriesState =
+        MutableStateFlow<FirestoreState<List<TimeSeries?>>>(FirestoreState.loading())
+    val timeseriesState = _timeseriesState
+
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val breweryId = savedStateHandle.get<String>("stockId")
-            breweryId?.let {
+        val stockId = savedStateHandle.get<String>("stockId")
+        stockId?.let {
+
+            viewModelScope.launch(Dispatchers.IO) {
                 repository.fetchStock(it).collect {
                     _stockState.value = it
                 }
             }
+            fetchTimeSeries(stockId, Interval.OneMonth())
         }
     }
 
-//    fun updateSearchQuery(query: String) {
-//        _searchQuery.value = query
-//    }
+    fun fetchTimeSeries(stockId: String, interval: Interval) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.fetchTimeSeries(stockId, interval).collect {
+                _timeseriesState.value = it
+            }
+        }
+    }
+
 //
-//    fun searchStocks(query: String) {
+
+//    fun teste() {
 //        viewModelScope.launch {
-//            repository.searchStocks(query = query).cachedIn(viewModelScope).collect {
-//                _searchedStock.value = it
+//            combine(
+//                repository.fetchTimeSeries("", Intervals.OneMonth()),
+//                repository.fetchStock("")
+//            ) { timeseries, stock ->
+//                StockUiState(stock, timeseries)
 //            }
 //        }
 //    }
 }
+
+//data class StockUiState(
+//    val stock: Stock,
+//    val timeseries: List<TimeSeries>
+//)

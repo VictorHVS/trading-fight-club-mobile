@@ -4,7 +4,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
-import com.victorhvs.tfc.domain.models.FirestoreState
+import com.victorhvs.tfc.domain.enums.FirestoreState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -94,6 +94,33 @@ inline fun <reified T> observeStatefulDoc(docRef: DocumentReference):
         }
     }
 
+    awaitClose { subscription.remove() }
+}
+
+inline fun <reified T> observeStatefulCollection(colRef: Query):
+        Flow<FirestoreState<List<T?>>> = callbackFlow {
+
+    trySend(FirestoreState.loading())
+
+    val subscription = colRef.addSnapshotListener { query, error ->
+
+        if (error != null) {
+            trySend( FirestoreState.failed(error.message))
+            return@addSnapshotListener
+        }
+
+        query?.documents?.let {
+            if(it.isEmpty()) {
+                trySend( FirestoreState.failed("Collection is empty"))
+                return@addSnapshotListener
+            } else {
+                val docs = it.map {
+                    it.toObject(T::class.java)
+                }
+                trySend(FirestoreState.success(docs))
+            }
+        }
+    }
     awaitClose { subscription.remove() }
 }
 

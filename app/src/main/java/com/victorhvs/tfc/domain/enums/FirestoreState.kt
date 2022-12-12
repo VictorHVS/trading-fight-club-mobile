@@ -1,4 +1,4 @@
-package com.victorhvs.tfc.domain.models
+package com.victorhvs.tfc.domain.enums
 
 sealed class FirestoreState<T> {
     class Loading<T>: FirestoreState<T>()

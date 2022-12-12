@@ -109,6 +109,7 @@ dependencies {
 //    implementation(libs.compose.paging3)
     implementation("androidx.paging:paging-compose:1.0.0-alpha16")
     implementation("com.google.accompanist:accompanist-navigation-material:0.28.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation(libs.accompanist.systemuicontroller)
 
@@ -129,6 +130,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
+    implementation("com.google.android.gms:play-services-auth:20.4.0")
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.appCheck)
