@@ -85,7 +85,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
 
                 StockScreen(
                     stockId = stockId.toString(),
-                    stockName = "",
                     navigateBack = {
                         navController.popBackStack()
                     },

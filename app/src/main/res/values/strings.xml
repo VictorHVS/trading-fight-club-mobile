@@ -11,4 +11,8 @@
     <string name="logo_rounded">Logomarca arredondada</string>
     <string name="buy_action">Comprar</string>
     <string name="sell_action">Vender</string>
+    <string name="quantity">Quantidade</string>
+    <string name="profit">Lucro</string>
+    <string name="total_value">Valor total</string>
+    <string name="avg_price">Custo Médio</string>
 </resources>
