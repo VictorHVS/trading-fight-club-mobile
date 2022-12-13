@@ -16,10 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.victorhvs.tfc.R
 import com.victorhvs.tfc.data.fake.FakeDataSource
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.extensions.gainOrLossColor
@@ -44,21 +46,31 @@ fun CardHorizontalStock(
                 )
             },
             leadingContent = {
-                Image(
-                    painter = rememberAsyncImagePainter(stock.logoUrl),
-                    contentDescription = stock.name,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = CircleShape,
-                        )
-                        .clip(CircleShape),
+                LogoRounded(
+                    url = stock.logoUrl
                 )
             },
         )
         Divider()
     }
+}
+
+@Composable
+fun LogoRounded(
+    url: String,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = rememberAsyncImagePainter(url),
+        contentDescription = stringResource(id = R.string.logo_rounded),
+        modifier = modifier
+            .size(40.dp)
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = CircleShape,
+            )
+            .clip(CircleShape),
+    )
 }
 
 @Composable

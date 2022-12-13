@@ -101,12 +101,13 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material.iconsExtended)
     implementation(libs.compose.runtime)
+    implementation(libs.compose.material)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
     implementation(libs.compose.navigation)
     implementation(libs.compose.navigationHilt)
-//    implementation(libs.compose.paging3)
-    implementation("androidx.paging:paging-compose:1.0.0-alpha16")
+    implementation(libs.compose.paging3)
+    implementation(libs.mpaandroidchart)
 
     implementation(libs.accompanist.systemuicontroller)
 
@@ -114,7 +115,6 @@ dependencies {
     implementation(libs.gradle.hilt)
 
     implementation(libs.hilt)
-//    implementation("androidx.paging:paging-common-ktx:3.1.1")
     kapt(libs.hiltCompiler)
 
     coreLibraryDesugaring(libs.desugar)
@@ -128,6 +128,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
+    implementation(libs.gp.googleAuthService)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.appCheck)

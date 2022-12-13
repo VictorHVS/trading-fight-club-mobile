@@ -4,4 +4,15 @@
     <string name="screen_explore">Explorar</string>
     <string name="loading">Carregando</string>
     <string name="search_by_symbol">Buscar por símbolo</string>
+    <string name="screen_wallet">Carteira</string>
+    <string name="screen_rank">Rank</string>
+    <string name="screen_profile">Perfil</string>
+    <string name="navigation_icon_description">Icone de navegação</string>
+    <string name="logo_rounded">Logomarca arredondada</string>
+    <string name="buy_action">Comprar</string>
+    <string name="sell_action">Vender</string>
+    <string name="quantity">Quantidade</string>
+    <string name="profit">Lucro</string>
+    <string name="total_value">Valor total</string>
+    <string name="avg_price">Custo Médio</string>
 </resources>

@@ -29,6 +29,7 @@ fun SearchWidget(
         modifier = modifier
             .fillMaxWidth(),
         value = text,
+        singleLine = true,
         onValueChange = { onTextChange(it) },
         label = { Text(stringResource(id = R.string.search_by_symbol)) },
         leadingIcon = {

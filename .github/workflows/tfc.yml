@@ -199,8 +199,8 @@ jobs:
           fetch-depth: 0
       - name: Common Steps
         uses: ./.github/actions/common-steps
-#      - name: Build staging APK
-#        run: ./gradlew assembleDebug --no-daemon --scan
+      - name: Build staging APK
+        run: ./gradlew assembleDebug --no-daemon --scan
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
