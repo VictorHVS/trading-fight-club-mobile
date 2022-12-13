@@ -2,6 +2,7 @@ package com.victorhvs.tfc.presentation.screens.auth
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,13 +29,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.victorhvs.tfc.R
+import com.victorhvs.tfc.core.Resource
+import com.victorhvs.tfc.domain.enums.AuthProvider
+import com.victorhvs.tfc.presentation.components.ProgressBar
 import com.victorhvs.tfc.presentation.theme.TfcTheme
 import com.victorhvs.tfc.presentation.theme.spacing
 
 @Composable
 fun AuthScreen(
-    onClick: () -> Unit
+    viewModel: AuthViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit
 ) {
     Scaffold {
         Column(
@@ -44,8 +51,25 @@ fun AuthScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             AuthHeader()
-            Providers(Modifier.fillMaxWidth(), onClick = onClick)
+            Providers(Modifier.fillMaxWidth(), signIn = {
+                viewModel.signIn(it)
+            })
             Footer()
+        }
+    }
+
+    when (val signInResponse = viewModel.signInResponse) {
+        is Resource.Loading -> ProgressBar()
+        is Resource.Success -> signInResponse.data.let { signedIn ->
+            LaunchedEffect(signedIn) {
+                if (signedIn) {
+                    navigateToHome()
+                }
+            }
+        }
+
+        is Resource.Failure -> LaunchedEffect(Unit) {
+            print(signInResponse.throwable)
         }
     }
 
@@ -58,14 +82,14 @@ fun Footer() {
         text = "Precisa de Ajuda?  •  Quer Contribuir?\n" +
                 "Made with ❤️ in Piauí, BR",
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.secondary),
+        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.secondary),
     )
 }
 
 @Composable
 fun Providers(
     modifier: Modifier,
-    onClick: () -> Unit
+    signIn: (AuthProvider) -> Unit
 ) {
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -87,7 +111,8 @@ fun Providers(
         Divider(modifier = modifier.padding(vertical = MaterialTheme.spacing.medium))
         Button(
             modifier = modifier,
-            onClick = onClick
+            enabled = false,
+            onClick = { }
         ) {
             Text(text = stringResource(R.string.auth_provider_google))
         }
@@ -99,8 +124,7 @@ fun Providers(
         }
         OutlinedButton(
             modifier = modifier.padding(top = MaterialTheme.spacing.medium),
-            enabled = false,
-            onClick = { /*TODO*/ }
+            onClick = { signIn(AuthProvider.ANON) }
         ) {
             Text(text = stringResource(R.string.auth_provider_anon))
         }
@@ -117,12 +141,14 @@ fun Providers(
         }
 
         Text(
-            modifier = modifier.padding(top = MaterialTheme.spacing.medium),
+            modifier = modifier
+                .padding(top = MaterialTheme.spacing.medium)
+                .clickable { },
             text = annotatedString,
             textAlign = TextAlign.Center,
             style = MaterialTheme
                 .typography
-                .labelSmall
+                .bodySmall
                 .copy(color = MaterialTheme.colorScheme.secondary),
         )
     }

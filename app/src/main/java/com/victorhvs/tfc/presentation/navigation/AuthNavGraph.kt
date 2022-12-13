@@ -13,30 +13,15 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     ) {
         composable(route = AuthScreen.Login.route) {
             AuthScreen(
-                onClick = {
+                navigateToHome = {
                     navController.popBackStack()
                     navController.navigate(Graph.HOME)
                 }
             )
-//            LoginContent(
-//                onClick = {
-//                    navController.popBackStack()
-//                    navController.navigate(Graph.HOME)
-//                }
-//                ,
-//                onSignUpClick = {
-//                    navController.navigate(AuthScreen.SignUp.route)
-//                },
-//                onForgotClick = {
-//                    navController.navigate(AuthScreen.Forgot.route)
-//                }
-//            )
         }
 //        composable(route = AuthScreen.SignUp.route) {
-//            ScreenContent(name = AuthScreen.SignUp.route) {}
 //        }
 //        composable(route = AuthScreen.Forgot.route) {
-//            ScreenContent(name = AuthScreen.Forgot.route) {}
 //        }
     }
 }
