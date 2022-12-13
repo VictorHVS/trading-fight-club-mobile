@@ -15,4 +15,11 @@
     <string name="profit">Lucro</string>
     <string name="total_value">Valor total</string>
     <string name="avg_price">Custo Médio</string>
+    <string name="auth_terms">Ao continuar, você reconhece que leu, entendeu e concorda com os <u>Termos  Condições</u> e <u>Política de Privacidade</u>.</string>
+    <string name="auth_email_label">Email</string>
+    <string name="auth_welcome">Bem vindo ao TradingFight.club</string>
+    <string name="auth_provider_anon">Continuar anônimo</string>
+    <string name="auth_provider_github">Continuar com Github</string>
+    <string name="auth_provider_google">Continuar com Google</string>
+    <string name="auth_provider_email">Continuar com Email</string>
 </resources>
