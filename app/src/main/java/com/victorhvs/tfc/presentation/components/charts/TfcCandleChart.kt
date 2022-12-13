@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.CandleStickChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.CandleData
@@ -87,25 +88,9 @@ fun TfcCandleChart(
                 isDragEnabled = true
                 description.isEnabled = false
 
-                xAxis.apply {
-                    setDrawGridLines(false)
-                    setDrawLabels(false)
-                    setDrawBorders(false)
-                    setDrawAxisLine(false)
-                }
-                axisLeft.apply {
-                    isGranularityEnabled = true
-                    setDrawGridLines(false)
-                    setDrawLabels(false)
-                    setDrawBorders(false)
-                    setDrawAxisLine(false)
-                }
-                axisRight.apply {
-                    setDrawLabels(false)
-                    setDrawGridLines(false)
-                    setDrawBorders(false)
-                    setDrawAxisLine(false)
-                }
+                xAxis.defaults()
+                axisRight.defaults()
+                axisLeft.defaults()
 
                 val mediumLabel = "R$${mediumValue.toFormatedCurrency()}"
                 val mediumLimit = limitLine(mediumValue, mediumLabel, onPrimaryContainer)
@@ -135,7 +120,7 @@ fun TfcCandleChart(
 
 @Preview(showBackground = true)
 @Composable
-fun CandleChartPreview() {
+private fun CandleChartPreview() {
     TfcTheme {
         TfcCandleChart(
             modifier = Modifier.fillMaxSize(),

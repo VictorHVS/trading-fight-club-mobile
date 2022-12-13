@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -69,25 +68,9 @@ fun TfcLineChart(
                 description.isEnabled = false
                 minOffset = 0f
 
-                xAxis.apply {
-                    position = XAxis.XAxisPosition.BOTTOM
-                    setDrawGridLines(false)
-                    setDrawLabels(false)
-                    setDrawBorders(false)
-                    setDrawAxisLine(false)
-                }
-                axisLeft.apply {
-                    setDrawGridLines(false)
-                    setDrawLabels(false)
-                    setDrawBorders(false)
-                    setDrawAxisLine(false)
-                }
-                axisRight.apply {
-                    setDrawLabels(false)
-                    setDrawGridLines(false)
-                    setDrawBorders(false)
-                    setDrawAxisLine(false)
-                }
+                xAxis.defaults()
+                axisLeft.defaults()
+                axisRight.defaults()
 
                 val mediumLabel = "R$${mediumValue.toFormatedCurrency()}"
                 val mediumLimit = limitLine(mediumValue, mediumLabel, onPrimaryContainer)
@@ -115,7 +98,7 @@ fun TfcLineChart(
 
 @Preview(showBackground = true)
 @Composable
-fun LineChartPreview() {
+private fun LineChartPreview() {
     TfcTheme {
         TfcLineChart(Modifier.fillMaxSize(), weekPrice)
     }

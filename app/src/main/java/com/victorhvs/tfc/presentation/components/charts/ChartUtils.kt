@@ -2,6 +2,7 @@ package com.victorhvs.tfc.presentation.components.charts
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LimitLine
 
 fun limitLine(
@@ -18,4 +19,10 @@ fun limitLine(
     limitLine.textColor = lineColor.toArgb()
     limitLine.lineColor = lineColor.toArgb()
     return limitLine
+}
+
+fun AxisBase.defaults() {
+    setDrawLabels(false)
+    setDrawGridLines(false)
+    setDrawAxisLine(false)
 }
