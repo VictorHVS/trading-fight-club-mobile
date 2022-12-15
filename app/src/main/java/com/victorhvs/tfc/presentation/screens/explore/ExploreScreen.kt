@@ -48,7 +48,7 @@ fun ExploreScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.screen_explore))
+                    Text(stringResource(id = R.string.screen_explore))
                 },
                 scrollBehavior = scrollBehavior,
             )
@@ -110,11 +110,7 @@ fun ExploreContent(
             loadState.refresh is LoadState.Loading -> ProgressBar()
             loadState.refresh is LoadState.Error -> println(loadState)
             loadState.append is LoadState.Loading -> ProgressBar()
-            loadState.append is LoadState.Error -> Toast.makeText(
-                LocalContext.current,
-                loadState.append.toString(),
-                Toast.LENGTH_LONG
-            ).show()
+            loadState.append is LoadState.Error -> println(loadState.append.toString())
         }
     }
 }
