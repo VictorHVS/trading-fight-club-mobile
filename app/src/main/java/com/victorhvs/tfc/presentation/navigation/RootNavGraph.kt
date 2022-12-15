@@ -21,7 +21,10 @@ fun RootNavigationGraph(
     ) {
         authNavGraph(navController = navController)
         composable(route = Graph.HOME) {
-            HomeScreen()
+            HomeScreen(logout = {
+                navController.popBackStack()
+                navController.navigate(Graph.AUTHENTICATION)
+            })
         }
     }
 

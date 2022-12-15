@@ -2,15 +2,20 @@ package com.victorhvs.tfc.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.victorhvs.tfc.core.Resource
+import com.victorhvs.tfc.data.datasource.FirebaseDataSource
+import com.victorhvs.tfc.domain.enums.FirestoreState
+import com.victorhvs.tfc.domain.models.User
 import com.victorhvs.tfc.domain.repository.ProfileRepository
 import com.victorhvs.tfc.domain.repository.SignOutResponse
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ProfileRepositoryImpl  @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val firestoreDataSource: FirebaseDataSource
 ): ProfileRepository {
     override suspend fun signOut(): SignOutResponse {
         return try {
@@ -19,5 +24,9 @@ class ProfileRepositoryImpl  @Inject constructor(
         } catch (e: Exception) {
             Resource.Failure(e)
         }
+    }
+
+    override suspend fun currentUser(): Flow<FirestoreState<User?>> {
+        return firestoreDataSource.getUser(auth.currentUser!!.uid)
     }
 }

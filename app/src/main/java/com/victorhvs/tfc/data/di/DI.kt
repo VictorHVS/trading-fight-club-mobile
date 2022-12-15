@@ -83,8 +83,9 @@ object DI {
 
     @Provides
     fun provideProfileRepository(
-        auth: FirebaseAuth
-    ): ProfileRepository = ProfileRepositoryImpl(auth)
+        auth: FirebaseAuth,
+        firebaseDataSource: FirebaseDataSource
+    ): ProfileRepository = ProfileRepositoryImpl(auth, firebaseDataSource)
 
     @Provides
     fun provideRankingRepository(

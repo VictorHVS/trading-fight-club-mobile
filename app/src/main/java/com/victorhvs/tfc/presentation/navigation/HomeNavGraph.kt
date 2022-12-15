@@ -18,19 +18,21 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.victorhvs.tfc.presentation.screens.explore.ExploreScreen
 import com.victorhvs.tfc.presentation.screens.home.BottomBarScreen
+import com.victorhvs.tfc.presentation.screens.profile.ProfileScreen
 import com.victorhvs.tfc.presentation.screens.ranking.ContestResultListScreen
 import com.victorhvs.tfc.presentation.screens.stock.StockScreen
 import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraph(navController: NavHostController, logout: () -> Unit) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
         startDestination = BottomBarScreen.Wallet.route
     ) {
         composable(route = BottomBarScreen.Wallet.route) {
+
         }
         composable(route = BottomBarScreen.Explore.route) {
             ExploreScreen(navigateToStockScreen = { stock ->
@@ -42,6 +44,9 @@ fun HomeNavGraph(navController: NavHostController) {
             ContestResultListScreen()
         }
         composable(route = BottomBarScreen.Profile.route) {
+            ProfileScreen(navigateToAuthScreen = {
+                logout()
+            })
         }
         detailsNavGraph(navController = navController)
     }

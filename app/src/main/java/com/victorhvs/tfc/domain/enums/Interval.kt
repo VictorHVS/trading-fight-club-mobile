@@ -23,7 +23,7 @@ sealed class Interval {
     data class Today(override val period: String = "1D", override val interval: String = "30m") : Interval() {
         override fun periodMilliseconds(): String {
             val calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.add(Calendar.DAY_OF_MONTH, -1)
             return calendar.timeInMillis.toString()
         }
     }
