@@ -1,8 +1,6 @@
 package com.victorhvs.tfc.presentation.components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Divider
+import androidx.compose.material3.Card
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,15 +11,14 @@ import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.presentation.theme.TfcTheme
 
 @Composable
-fun CardHorizontalStock(
+fun CardHorizontalPortfolio(
     modifier: Modifier = Modifier,
-    stock: Stock,
-    onStockClicked: (stock: Stock) -> Unit
+    stock: Stock
 ) {
-    Column(modifier = modifier.clickable { onStockClicked(stock) }) {
+    Card(modifier = modifier) {
         ListItem(
-            headlineText = { Text(stock.name) },
-            overlineText = { Text(stock.symbol) },
+            headlineText = { Text(stock.symbol) },
+            supportingText = { Text("100 ações") },
             trailingContent = {
                 PriceFloatingLabel(
                     price = stock.price,
@@ -35,14 +32,13 @@ fun CardHorizontalStock(
                 )
             },
         )
-        Divider()
     }
 }
 
 @Preview
 @Composable
-private fun CardHorizontalStockPreview() {
+private fun CardHorizontalPortfolioPreview() {
     TfcTheme {
-        CardHorizontalStock(stock = FakeDataSource.flry3, onStockClicked = {})
+        CardHorizontalPortfolio(stock = FakeDataSource.flry3)
     }
 }

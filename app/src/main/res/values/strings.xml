@@ -31,4 +31,5 @@
     <string name="trades">Negociações</string>
     <string name="rank_global">Rank Global</string>
     <string name="profitable">Taxa de acerto</string>
+    <string name="history">Histórico</string>
 </resources>
