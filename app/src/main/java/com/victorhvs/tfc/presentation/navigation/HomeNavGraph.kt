@@ -25,13 +25,14 @@ import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraph(navController: NavHostController, logout: () -> Unit) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
         startDestination = BottomBarScreen.Wallet.route
     ) {
         composable(route = BottomBarScreen.Wallet.route) {
+
         }
         composable(route = BottomBarScreen.Explore.route) {
             ExploreScreen(navigateToStockScreen = { stock ->
@@ -43,7 +44,9 @@ fun HomeNavGraph(navController: NavHostController) {
             ContestResultListScreen()
         }
         composable(route = BottomBarScreen.Profile.route) {
-            ProfileScreen(navigateToAuthScreen = {  })
+            ProfileScreen(navigateToAuthScreen = {
+                logout()
+            })
         }
         detailsNavGraph(navController = navController)
     }

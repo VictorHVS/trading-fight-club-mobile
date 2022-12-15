@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.victorhvs.tfc.R
+import com.victorhvs.tfc.core.Resource
 import com.victorhvs.tfc.domain.enums.FirestoreState
 import com.victorhvs.tfc.domain.models.User
 import com.victorhvs.tfc.presentation.components.ProgressBar
@@ -42,6 +44,20 @@ fun ProfileScreen(
         mutableStateOf("")
     }
 
+    when (val signOutResponse = viewModel.signOutResponse) {
+        is Resource.Loading -> ProgressBar()
+        is Resource.Success -> {
+            LaunchedEffect(signOutResponse) {
+                if (signOutResponse.data) {
+                    navigateToAuthScreen()
+                }
+            }
+        }
+        is Resource.Failure -> LaunchedEffect(Unit) {
+            print(signOutResponse.throwable)
+        }
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -50,7 +66,9 @@ fun ProfileScreen(
                     Text(screenTitle.value)
                 },
                 actions = {
-                    TextButton(onClick = { navigateToAuthScreen() }) {
+                    TextButton(onClick = {
+                        viewModel.signOut()
+                    }) {
                         Icon(imageVector = Icons.Outlined.Logout, contentDescription = null)
                     }
                 }

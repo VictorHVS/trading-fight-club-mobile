@@ -35,12 +35,15 @@ import com.victorhvs.tfc.R
 import com.victorhvs.tfc.presentation.navigation.HomeNavGraph
 
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(
+    navController: NavHostController = rememberNavController(),
+    logout: () -> Unit
+) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController)}
     ) {
         print(it)
-        HomeNavGraph(navController = navController)
+        HomeNavGraph(navController = navController, logout)
     }
 }
 
