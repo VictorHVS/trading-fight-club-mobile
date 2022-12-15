@@ -48,7 +48,7 @@ fun ExploreScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.screen_explore))
+                    Text(stringResource(id = R.string.screen_explore))
                 },
                 scrollBehavior = scrollBehavior,
             )
