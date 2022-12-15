@@ -1,13 +1,19 @@
 package com.victorhvs.tfc.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.victorhvs.tfc.presentation.screens.auth.AuthViewModel
 import com.victorhvs.tfc.presentation.screens.home.HomeScreen
 
 @Composable
-fun RootNavigationGraph(navController: NavHostController) {
+fun RootNavigationGraph(
+    navController: NavHostController,
+    vm: AuthViewModel = hiltViewModel()
+) {
+
     NavHost(
         navController = navController,
         route = Graph.ROOT,
@@ -17,6 +23,11 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.HOME) {
             HomeScreen()
         }
+    }
+
+    if(vm.isUserAuthenticated) {
+        navController.popBackStack()
+        navController.navigate(Graph.HOME)
     }
 }
 

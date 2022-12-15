@@ -110,11 +110,7 @@ fun ExploreContent(
             loadState.refresh is LoadState.Loading -> ProgressBar()
             loadState.refresh is LoadState.Error -> println(loadState)
             loadState.append is LoadState.Loading -> ProgressBar()
-            loadState.append is LoadState.Error -> Toast.makeText(
-                LocalContext.current,
-                loadState.append.toString(),
-                Toast.LENGTH_LONG
-            ).show()
+            loadState.append is LoadState.Error -> println(loadState.append.toString())
         }
     }
 }
