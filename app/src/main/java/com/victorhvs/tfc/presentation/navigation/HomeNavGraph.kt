@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.victorhvs.tfc.presentation.screens.explore.ExploreScreen
 import com.victorhvs.tfc.presentation.screens.home.BottomBarScreen
+import com.victorhvs.tfc.presentation.screens.profile.ProfileScreen
 import com.victorhvs.tfc.presentation.screens.ranking.ContestResultListScreen
 import com.victorhvs.tfc.presentation.screens.stock.StockScreen
 import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
@@ -42,6 +43,7 @@ fun HomeNavGraph(navController: NavHostController) {
             ContestResultListScreen()
         }
         composable(route = BottomBarScreen.Profile.route) {
+            ProfileScreen(navigateToAuthScreen = {  })
         }
         detailsNavGraph(navController = navController)
     }

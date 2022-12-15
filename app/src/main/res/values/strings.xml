@@ -24,4 +24,11 @@
     <string name="auth_provider_email">Continuar com Email</string>
     <string name="screen_ranking">Ranking</string>
     <string name="anon_name">Usuário anônimo</string>
+    <string name="logout">Sair</string>
+    <string name="portfolio">Portfólio</string>
+    <string name="performance">Performance</string>
+    <string name="net_value">Dinheiro Disponível</string>
+    <string name="trades">Negociações</string>
+    <string name="rank_global">Rank Global</string>
+    <string name="profitable">Taxa de acerto</string>
 </resources>
