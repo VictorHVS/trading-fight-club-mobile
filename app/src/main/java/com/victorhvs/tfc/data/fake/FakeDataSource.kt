@@ -2,6 +2,8 @@ package com.victorhvs.tfc.data.fake
 
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.domain.models.TimeSeries
+import com.victorhvs.tfc.domain.models.User
+import com.victorhvs.tfc.domain.models.UserPortfolio
 
 object FakeDataSource {
 
@@ -52,4 +54,10 @@ object FakeDataSource {
             timeSeries.copy(close = 1.0, high = 3.0, low = 1.0, open = 1.0),
             timeSeries.copy(close = 5.0, high = 3.0, low = 1.0, open = 1.0),
         )
+
+    val user = User("victorhvs", name = "Victor Hugo", username = "victorhvs", portfolio = listOf(
+        UserPortfolio(
+            netValue = 10_000.0
+        )
+    ))
 }

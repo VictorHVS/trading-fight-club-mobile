@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.victorhvs.tfc.presentation.screens.explore.ExploreScreen
 import com.victorhvs.tfc.presentation.screens.home.BottomBarScreen
+import com.victorhvs.tfc.presentation.screens.ranking.ContestResultListScreen
 import com.victorhvs.tfc.presentation.screens.stock.StockScreen
 import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ fun HomeNavGraph(navController: NavHostController) {
             )
         }
         composable(route = BottomBarScreen.Rank.route) {
+            ContestResultListScreen()
         }
         composable(route = BottomBarScreen.Profile.route) {
         }

@@ -22,4 +22,6 @@
     <string name="auth_provider_github">Continuar com Github</string>
     <string name="auth_provider_google">Continuar com Google</string>
     <string name="auth_provider_email">Continuar com Email</string>
+    <string name="screen_ranking">Ranking</string>
+    <string name="anon_name">Usuário anônimo</string>
 </resources>

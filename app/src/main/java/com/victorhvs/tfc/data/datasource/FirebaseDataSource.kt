@@ -4,12 +4,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.victorhvs.tfc.core.DispatcherProvider
 import com.victorhvs.tfc.domain.models.Stock
+import com.victorhvs.tfc.domain.models.User
 import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 interface FirebaseDataSource {
     suspend fun getStocks(): List<Stock>
+
+    suspend fun getRanking(): List<User>
 }
 
 class FirebaseDataSourceImp @Inject constructor(
@@ -21,6 +24,9 @@ class FirebaseDataSourceImp @Inject constructor(
         const val STOCK_REF = "stocks"
         const val STOCK_ORDER_FIELD = "uuid"
         const val STOCKS_PER_PAGE = 20L
+
+        const val USER_REF = "users"
+        const val RANKING_SIZE = 50L
     }
 
     override suspend fun getStocks(): List<Stock> {
@@ -33,6 +39,19 @@ class FirebaseDataSourceImp @Inject constructor(
                 .await()
 
             snapshot.toObjects(Stock::class.java)
+        }
+    }
+
+    override suspend fun getRanking(): List<User> {
+        return withContext(dispatcher.io()) {
+            val mLotteryCollection = client.collection(USER_REF)
+
+            val snapshot = mLotteryCollection.limit(RANKING_SIZE)
+                .orderBy("proftable", Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            snapshot.toObjects(User::class.java)
         }
     }
 }
