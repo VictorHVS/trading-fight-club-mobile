@@ -199,6 +199,12 @@ jobs:
           fetch-depth: 0
       - name: Common Steps
         uses: ./.github/actions/common-steps
+      - name: Create and populate google-services file
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+        run: |
+          touch app/google-services.json
+          echo $GOOGLE_SERVICES >> app/google-services.json
       - name: Build staging APK
         run: ./gradlew assembleDebug --no-daemon --scan
       - name: Upload artifact to Firebase App Distribution
