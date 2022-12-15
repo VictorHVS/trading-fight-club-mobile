@@ -135,6 +135,10 @@ dependencies {
     implementation(libs.firebase.appCheckDebug)
 
     implementation(libs.androidx.test.core)
+    implementation(libs.test.mockk)
+    implementation(libs.test.kotlinCoroutines)
+    implementation(libs.test.junit)
+    testImplementation(libs.test.kotest)
     implementation(libs.androidx.test.espresso.core)
     implementation(libs.androidx.test.ext)
     implementation(libs.androidx.test.runner)

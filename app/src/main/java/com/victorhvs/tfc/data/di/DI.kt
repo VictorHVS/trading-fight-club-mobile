@@ -14,9 +14,11 @@ import com.victorhvs.tfc.data.datasource.FirebaseDataSource
 import com.victorhvs.tfc.data.datasource.FirebaseDataSourceImp
 import com.victorhvs.tfc.data.repository.AuthRepositoryImpl
 import com.victorhvs.tfc.data.repository.ProfileRepositoryImpl
+import com.victorhvs.tfc.data.repository.RankingRepositoryImpl
 import com.victorhvs.tfc.data.repository.StockRepositoryImpl
 import com.victorhvs.tfc.domain.repository.AuthRepository
 import com.victorhvs.tfc.domain.repository.ProfileRepository
+import com.victorhvs.tfc.domain.repository.RankingRepository
 import com.victorhvs.tfc.domain.repository.StockRepository
 import com.victorhvs.tfc.domain.use_case.IsUserAuthenticated
 import com.victorhvs.tfc.domain.use_case.SignInAnonymously
@@ -83,6 +85,15 @@ object DI {
     fun provideProfileRepository(
         auth: FirebaseAuth
     ): ProfileRepository = ProfileRepositoryImpl(auth)
+
+    @Provides
+    fun provideRankingRepository(
+        client: FirebaseDataSource,
+        dispacher: DispatcherProvider
+    ): RankingRepository = RankingRepositoryImpl(
+        firebaseDataSource = client,
+        dispatcher = dispacher
+    )
 
     @Provides
     fun provideUseCases(

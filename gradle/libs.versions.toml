@@ -127,6 +127,7 @@ firebase-appCheckDebug = { module = "com.google.firebase:firebase-appcheck-debug
 # test libraries
 test-junit = { module = "junit:junit", version.ref = "junit" }
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-kotest = { module = "io.kotest:kotest-assertions-core", version = "5.5.4" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }

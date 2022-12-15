@@ -11,9 +11,9 @@ data class User(
     @JvmField @PropertyName("week")
     val week: List<Double> = listOf(),
     @JvmField @PropertyName("name")
-    val name: String = "",
+    val name: String? = null,
     @JvmField @PropertyName("username")
-    val username: String = "",
+    val username: String? = null,
     @JvmField @PropertyName("performance")
     val performance: Double = 0.0,
     @JvmField @PropertyName("proftable")
@@ -22,16 +22,16 @@ data class User(
     val trades: Int = 0,
     @JvmField @PropertyName("rank_position")
     val rankPosition: Int = 0,
-    @JvmField @PropertyName("portfolio")
-    val portfolio: UserPortfolio,
+    @JvmField @PropertyName("portfolio_by_currency")
+    val portfolio: List<UserPortfolio> = emptyList(),
 )
 
 data class UserPortfolio(
     @JvmField @PropertyName("net_value")
     val netValue: Double = 0.0,
-    @JvmField @PropertyName("price_flutuation")
+    @JvmField @PropertyName("price_fluctuation")
     val priceFlutuation: Double = 0.0,
-    @JvmField @PropertyName("price_flutuation_absolute")
+    @JvmField @PropertyName("price_fluctuation_absolute")
     val priceFlutuationAbsolute: Double = 0.0,
     @JvmField @PropertyName("sum")
     val sum: Double = 0.0,
