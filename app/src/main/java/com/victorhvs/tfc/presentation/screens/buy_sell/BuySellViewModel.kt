@@ -33,6 +33,8 @@ class BuySellViewModel @Inject constructor(
     val subtotal = mutableStateOf("0")
     val finalNetValue = mutableStateOf("0")
 
+    val buttonEnabled = mutableStateOf(false)
+
     private val _postOrderState = MutableStateFlow<FirestoreState<Unit>>(FirestoreState.loading())
     val postOrderState = _postOrderState
 
@@ -62,7 +64,7 @@ class BuySellViewModel @Inject constructor(
     fun postOrder(isBuy: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
-                val stock : Stock = (_stockState.value as FirestoreState.Success<Stock?>).data!!
+                val stock: Stock = (_stockState.value as FirestoreState.Success<Stock?>).data!!
                 val order = Order(
                     amount = _quantity.value,
                     stockId = stock.uuid,
@@ -70,7 +72,9 @@ class BuySellViewModel @Inject constructor(
                     currency = stock.currency,
                     currencySymbol = "R$",
                     exchangeId = stock.exchangeId,
-                    stockUrl = stock.logoUrl
+                    stockUrl = stock.logoUrl,
+                    unitPrice = stock.price,
+                    totalPrice = stock.price * _quantity.value
                 )
                 repository.postOrder(order)
             }.onSuccess {
@@ -84,17 +88,22 @@ class BuySellViewModel @Inject constructor(
 
     private fun calculeSubtotal() {
         try {
-            val stock : Stock = (_stockState.value as FirestoreState.Success<Stock?>).data!!
-            subtotal.value = (_quantity.value * stock.price).toFormatedCurrency()
+            val stock: Stock = (_stockState.value as FirestoreState.Success<Stock?>).data!!
+            val subtotalDouble = _quantity.value * stock.price
+            subtotal.value = subtotalDouble.toFormatedCurrency()
+
+            buttonEnabled.value = subtotalDouble > 0.0
         } catch (e: Exception) {
             e.printStackTrace()
+            buttonEnabled.value = false
         }
     }
 
     private fun calculeNetValue() {
         try {
-            val user : User = (_userState.value as FirestoreState.Success<User?>).data!!
-            finalNetValue.value = (user.portfolio.first().netValue - subtotal.value.toDouble()).toFormatedCurrency()
+            val user: User = (_userState.value as FirestoreState.Success<User?>).data!!
+            finalNetValue.value =
+                (user.portfolio.first().netValue - subtotal.value.toDouble()).toFormatedCurrency()
         } catch (e: Exception) {
             e.printStackTrace()
         }

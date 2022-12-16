@@ -154,7 +154,7 @@ fun TfcBottomSheet(
                 )
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = true,
+                    enabled = viewModel.buttonEnabled.value,
                     onClick = { viewModel.postOrder(isBuy) }) {
                     Text(type)
                 }

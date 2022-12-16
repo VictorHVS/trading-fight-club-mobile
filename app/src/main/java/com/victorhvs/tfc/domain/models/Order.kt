@@ -8,6 +8,8 @@ data class Order(
     @PropertyName("uuid") val uuid: String = "",
     @JvmField @ServerTimestamp @PropertyName("created_at")
     val createdAt: Date = Date(),
+    @JvmField @PropertyName("updated_at")
+    val updatedAt: Date? = null,
     @JvmField @PropertyName("amount")
     val amount: Int = 0,
     @JvmField @PropertyName("currency")
@@ -17,7 +19,7 @@ data class Order(
     @JvmField @PropertyName("exchange_id")
     val exchangeId: String = "",
     @JvmField @PropertyName("executed")
-    val executed: Boolean = false,
+    val executed: Boolean? = false,
     @JvmField @PropertyName("is_buy")
     val isBuy: Boolean = true,
     @JvmField @PropertyName("stock_id")

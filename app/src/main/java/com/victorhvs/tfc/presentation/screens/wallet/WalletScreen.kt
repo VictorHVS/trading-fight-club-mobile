@@ -2,6 +2,7 @@ package com.victorhvs.tfc.presentation.screens.wallet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -86,6 +87,11 @@ fun PendingOrders(modifier: Modifier, orderState: FirestoreState<List<Order?>>) 
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                 modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium)
             ) {
+                item {
+                    Spacer(
+                        modifier = Modifier.padding(MaterialTheme.spacing.small)
+                    )
+                }
                 itemsIndexed(orders) { index, order ->
                     CardVerticalOrder(
                         logoUrl = order!!.stockUrl ?: "",
