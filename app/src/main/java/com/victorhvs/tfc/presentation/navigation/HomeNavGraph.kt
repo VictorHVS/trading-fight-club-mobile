@@ -1,14 +1,21 @@
 package com.victorhvs.tfc.presentation.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -80,12 +87,17 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
             val scope = rememberCoroutineScope()
 
             ModalBottomSheetLayout(
+                modifier = Modifier.background(
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ),
                 sheetState = state,
                 sheetContent = {
                     TfcBottomSheet(
-                        showFeed = {},
-                        showAnotherSheet = {},
-                        arg = "ae"
+                        stockId = stockId,
+                        isBuy = false,
+                        currentPrice = 17.13,
+                        netValue = 10_000.90
                     )
                 }
             ) {

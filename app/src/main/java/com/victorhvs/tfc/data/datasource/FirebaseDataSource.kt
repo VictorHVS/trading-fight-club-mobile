@@ -20,6 +20,8 @@ interface FirebaseDataSource {
     suspend fun getRanking(): List<User>
 
     suspend fun getUser(userId: String): Flow<FirestoreState<User?>>
+
+
 }
 
 class FirebaseDataSourceImp @Inject constructor(

@@ -38,7 +38,7 @@ fun ContestResultListScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(id = R.string.screen_ranking))
+                    Text(stringResource(R.string.screen_ranking))
                 },
                 scrollBehavior = scrollBehavior,
             )
