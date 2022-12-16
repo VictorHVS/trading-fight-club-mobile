@@ -34,7 +34,7 @@ fun TfcLineChart(
         floor(entriesNotNaN.map { it.close }.average().toFloat() * 100) / 100
     }
     val maxValue = remember { entriesNotNaN.maxBy { it.close }.close.toFloat() }
-    val minValue = remember { entriesNotNaN.maxBy { it.close }.close.toFloat() }
+    val minValue = remember { entriesNotNaN.minBy { it.close }.close.toFloat() }
 
     AndroidView(
         modifier = modifier.fillMaxWidth(),

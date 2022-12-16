@@ -1,13 +1,11 @@
 package com.victorhvs.tfc.presentation.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,6 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -86,14 +86,25 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
             )
             val scope = rememberCoroutineScope()
 
+            when(state.currentValue) {
+                ModalBottomSheetValue.Hidden -> {
+                    LocalSoftwareKeyboardController.current?.hide()
+                }
+                ModalBottomSheetValue.Expanded -> {}
+                ModalBottomSheetValue.HalfExpanded -> {}
+            }
+
             ModalBottomSheetLayout(
-                modifier = Modifier.background(
-                    shape = RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer
-                ),
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.scrim),
                 sheetState = state,
                 sheetContent = {
                     TfcBottomSheet(
+                        modifier = Modifier
+                            .background(
+                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                                color = MaterialTheme.colorScheme.surface
+                            )
+                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                         stockId = stockId,
                         isBuy = false,
                         currentPrice = 17.13,

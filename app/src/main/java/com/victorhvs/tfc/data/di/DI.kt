@@ -67,10 +67,14 @@ object DI {
     @Singleton
     fun provideStockRepository(
         client: FirebaseFirestore,
-        dispacher: DispatcherProvider
+        dispacher: DispatcherProvider,
+        auth: FirebaseAuth,
+        firebaseDataSource: FirebaseDataSource
     ): StockRepository = StockRepositoryImpl(
         dispatcher = dispacher,
         client = client,
+        auth = auth,
+        firebaseDataSource = firebaseDataSource
     )
 
     @Provides
@@ -83,9 +87,10 @@ object DI {
 
     @Provides
     fun provideProfileRepository(
+        client: FirebaseFirestore,
         auth: FirebaseAuth,
         firebaseDataSource: FirebaseDataSource
-    ): ProfileRepository = ProfileRepositoryImpl(auth, firebaseDataSource)
+    ): ProfileRepository = ProfileRepositoryImpl(auth, firebaseDataSource, client)
 
     @Provides
     fun provideRankingRepository(

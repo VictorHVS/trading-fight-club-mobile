@@ -1,10 +1,12 @@
 package com.victorhvs.tfc.presentation.screens.stock
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -17,11 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.victorhvs.tfc.R
 import com.victorhvs.tfc.presentation.extensions.toFormatedCurrency
@@ -31,6 +35,7 @@ import com.victorhvs.tfc.presentation.theme.spacing
 
 @Composable
 fun TfcBottomSheet(
+    modifier: Modifier = Modifier,
     stockId: String,
     isBuy: Boolean,
     currentPrice: Double,
@@ -39,7 +44,7 @@ fun TfcBottomSheet(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val quantityText = remember { mutableStateOf("") }
+    val quantityText = remember { mutableStateOf("0") }
 
     val quantity = remember { mutableStateOf(0) }
     val subtotal = quantity.value * currentPrice
@@ -48,7 +53,12 @@ fun TfcBottomSheet(
     val type = if (isBuy) "Comprar" else "Vender"
 
     Column(
-        modifier = Modifier
+        modifier = modifier
+            .background(
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                color = MaterialTheme.colorScheme.surface
+            )
+            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
             .padding(MaterialTheme.spacing.medium)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
@@ -58,7 +68,8 @@ fun TfcBottomSheet(
             modifier = Modifier.fillMaxWidth(),
             value = quantityText.value,
             singleLine = true,
-            onValueChange = { quantityText.value = it
+            onValueChange = {
+                quantityText.value = it
                 it.toIntOrNull()?.let {
                     quantity.value = it
                 }
