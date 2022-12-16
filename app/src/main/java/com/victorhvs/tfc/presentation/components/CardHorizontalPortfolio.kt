@@ -1,44 +1,60 @@
 package com.victorhvs.tfc.presentation.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.material3.Card
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.victorhvs.tfc.data.fake.FakeDataSource
-import com.victorhvs.tfc.domain.models.Stock
+import com.victorhvs.tfc.domain.models.Portfolio
 import com.victorhvs.tfc.presentation.theme.TfcTheme
 
 @Composable
 fun CardHorizontalPortfolio(
     modifier: Modifier = Modifier,
-    stock: Stock
+    portfolio: Portfolio
 ) {
     Card(modifier = modifier) {
         ListItem(
-            headlineText = { Text(stock.symbol) },
-            supportingText = { Text("100 ações") },
+            colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            modifier = Modifier.background(Color.Red),
+            headlineText = {
+                Text(
+                    text = portfolio.stockId,
+                    style = MaterialTheme.typography.labelMedium
+                )
+            },
+            supportingText = {
+                Text(
+                    text = "${portfolio.amount} ações",
+                    style = MaterialTheme.typography.labelSmall
+                )
+            },
             trailingContent = {
                 PriceFloatingLabel(
-                    price = stock.price,
-                    floatAbsolute = stock.priceAbsoluteFloating,
-                    floatPercentage = stock.priceFloating,
+                    price = portfolio.totalSpent,
+                    floatAbsolute = portfolio.mediumPrice
                 )
             },
             leadingContent = {
                 LogoRounded(
-                    url = stock.logoUrl
+                    url = portfolio.stockUrl
                 )
             },
         )
     }
 }
 
-@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun CardHorizontalPortfolioPreview() {
     TfcTheme {
-        CardHorizontalPortfolio(stock = FakeDataSource.flry3)
+        CardHorizontalPortfolio(portfolio = FakeDataSource.portfolio)
     }
 }

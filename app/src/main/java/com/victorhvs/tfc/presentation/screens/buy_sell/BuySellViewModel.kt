@@ -69,7 +69,8 @@ class BuySellViewModel @Inject constructor(
                     isBuy = isBuy,
                     currency = stock.currency,
                     currencySymbol = "R$",
-                    exchangeId = stock.exchangeId
+                    exchangeId = stock.exchangeId,
+                    stockUrl = stock.logoUrl
                 )
                 repository.postOrder(order)
             }.onSuccess {

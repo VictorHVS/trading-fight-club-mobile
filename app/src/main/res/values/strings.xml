@@ -37,4 +37,6 @@
     <string name="buy_sell_unit_price">Preço unitário</string>
     <string name="buy_sell_net_value">Saldo final</string>
     <string name="buy_sell_total_price">Subtotal</string>
+    <string name="pending_orders">Ordens Pendentes</string>
+    <string name="my_stocks">Minhas Ações</string>
 </resources>

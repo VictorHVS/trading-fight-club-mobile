@@ -28,4 +28,6 @@ data class Order(
     val unitPrice: Double = 0.0,
     @JvmField @PropertyName("user_id")
     val userId: String = "",
+    @JvmField @PropertyName("stock_url")
+    val stockUrl: String? = "",
 )

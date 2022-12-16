@@ -1,6 +1,5 @@
 package com.victorhvs.tfc.presentation.screens.ranking
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,8 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.victorhvs.tfc.R
 import com.victorhvs.tfc.core.State
@@ -25,7 +22,7 @@ import com.victorhvs.tfc.presentation.components.CardHorizontalRanking
 import com.victorhvs.tfc.presentation.components.ProgressBar
 
 @Composable
-fun ContestResultListScreen(
+fun RankingListScreen(
     modifier: Modifier = Modifier,
     viewModel: RankingViewModel = hiltViewModel()
 ) {
@@ -67,13 +64,13 @@ fun RankingContent(
         is State.Loading -> ProgressBar()
 
         is State.Success -> {
-            ContestResultList(modifier = modifier, users = state.data)
+            RankingList(modifier = modifier, users = state.data)
         }
     }
 }
 
 @Composable
-fun ContestResultList(
+fun RankingList(
     users: List<User>,
     modifier: Modifier = Modifier
 ) {

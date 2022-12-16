@@ -1,5 +1,6 @@
 package com.victorhvs.tfc.data.fake
 
+import com.victorhvs.tfc.domain.models.Portfolio
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.domain.models.TimeSeries
 import com.victorhvs.tfc.domain.models.User
@@ -60,4 +61,6 @@ object FakeDataSource {
             netValue = 10_000.0
         )
     ))
+
+    val portfolio = Portfolio()
 }

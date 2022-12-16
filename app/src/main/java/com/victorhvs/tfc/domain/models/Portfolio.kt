@@ -26,4 +26,6 @@ data class Portfolio(
     val mediumPrice: Double = 0.0,
     @JvmField @PropertyName("user_id")
     val userId: String = "",
+    @JvmField @PropertyName("stock_url")
+    val stockUrl: String = "",
 )
