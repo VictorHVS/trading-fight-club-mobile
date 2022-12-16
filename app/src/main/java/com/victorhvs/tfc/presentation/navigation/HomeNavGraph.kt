@@ -28,7 +28,7 @@ import com.victorhvs.tfc.presentation.screens.home.BottomBarScreen
 import com.victorhvs.tfc.presentation.screens.profile.ProfileScreen
 import com.victorhvs.tfc.presentation.screens.ranking.ContestResultListScreen
 import com.victorhvs.tfc.presentation.screens.stock.StockScreen
-import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
+import com.victorhvs.tfc.presentation.screens.buy_sell.TfcBottomSheet
 import kotlinx.coroutines.launch
 
 @Composable
@@ -85,6 +85,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 skipHalfExpanded = skipHalfExpanded
             )
             val scope = rememberCoroutineScope()
+            val isBuy = remember { mutableStateOf(true) }
 
             when(state.currentValue) {
                 ModalBottomSheetValue.Hidden -> {
@@ -106,9 +107,12 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                             )
                             .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                         stockId = stockId,
-                        isBuy = false,
-                        currentPrice = 17.13,
-                        netValue = 10_000.90
+                        isBuy = isBuy.value,
+                        closeModal = {
+                            scope.launch {
+                                state.hide()
+                            }
+                        }
                     )
                 }
             ) {
@@ -119,6 +123,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                         navController.popBackStack()
                     },
                     showSheet = {
+                        isBuy.value = it
                         scope.launch {
                             state.show()
                         }

@@ -1,5 +1,6 @@
-package com.victorhvs.tfc.presentation.screens.stock
+package com.victorhvs.tfc.presentation.screens.buy_sell
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,11 +16,15 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -28,8 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.victorhvs.tfc.R
+import com.victorhvs.tfc.domain.enums.FirestoreState
+import com.victorhvs.tfc.domain.models.Stock
+import com.victorhvs.tfc.presentation.components.ProgressBar
 import com.victorhvs.tfc.presentation.extensions.toFormatedCurrency
-import com.victorhvs.tfc.presentation.screens.buy_sell.BuySellViewModel
 import com.victorhvs.tfc.presentation.theme.TfcTheme
 import com.victorhvs.tfc.presentation.theme.spacing
 
@@ -38,19 +45,33 @@ fun TfcBottomSheet(
     modifier: Modifier = Modifier,
     stockId: String,
     isBuy: Boolean,
-    currentPrice: Double,
-    netValue: Double,
+    closeModal: () -> Unit,
     viewModel: BuySellViewModel = hiltViewModel(),
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val stockState by viewModel.stockState.collectAsState()
 
     val quantityText = remember { mutableStateOf("0") }
 
-    val quantity = remember { mutableStateOf(0) }
-    val subtotal = quantity.value * currentPrice
-    val finalNetValue = netValue - subtotal
-
     val type = if (isBuy) "Comprar" else "Vender"
+
+    LaunchedEffect(stockId) {
+        viewModel.init(stockId)
+    }
+
+    val postOrderState by viewModel.postOrderState.collectAsState()
+    when (postOrderState) {
+        is FirestoreState.Failed -> {
+            closeModal()
+        }
+        is FirestoreState.Loading -> {
+
+        }
+        is FirestoreState.Success -> {
+            Toast.makeText(LocalContext.current, "Ordem enviada com Sucesso!", Toast.LENGTH_LONG).show()
+            closeModal()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -63,71 +84,81 @@ fun TfcBottomSheet(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
-        Text(text = "$type $stockId", style = MaterialTheme.typography.headlineLarge)
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = quantityText.value,
-            singleLine = true,
-            onValueChange = {
-                quantityText.value = it
-                it.toIntOrNull()?.let {
-                    quantity.value = it
+
+        when (stockState) {
+            is FirestoreState.Failed -> closeModal()
+            is FirestoreState.Loading -> ProgressBar()
+            is FirestoreState.Success -> {
+                val stock = (stockState as FirestoreState.Success<Stock?>).data!!
+
+                Text(text = "$type $stockId", style = MaterialTheme.typography.headlineLarge)
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = quantityText.value,
+                    singleLine = true,
+                    onValueChange = {
+                        quantityText.value = it
+                        it.toIntOrNull()?.let {quantity ->
+                            quantityText.value = quantity.toString()
+                        }
+                        viewModel.updateQuantity(it)
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    label = { Text(stringResource(id = R.string.buy_sell_quantity)) }
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = stock.price.toFormatedCurrency(),
+                    enabled = false,
+                    onValueChange = { },
+                    leadingIcon = {
+                        Text(text = "R$")
+                    },
+                    label = { Text(stringResource(id = R.string.buy_sell_unit_price)) }
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "$type a mercado")
+                    Switch(checked = true, onCheckedChange = {}, enabled = false)
                 }
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    keyboardController?.hide()
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = viewModel.subtotal.value,
+                    enabled = false,
+                    leadingIcon = {
+                        Text(text = "R$")
+                    },
+                    onValueChange = { },
+                    label = { Text(stringResource(id = R.string.buy_sell_total_price)) }
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = viewModel.finalNetValue.value,
+                    enabled = false,
+                    leadingIcon = {
+                        Text(text = "R$")
+                    },
+                    onValueChange = { },
+                    label = { Text(stringResource(id = R.string.buy_sell_net_value)) }
+                )
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = true,
+                    onClick = { viewModel.postOrder(isBuy) }) {
+                    Text(type)
                 }
-            ),
-            label = { Text(stringResource(id = R.string.buy_sell_quantity)) }
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = currentPrice.toFormatedCurrency(),
-            enabled = false,
-            onValueChange = { },
-            leadingIcon = {
-                Text(text = "R$")
-            },
-            label = { Text(stringResource(id = R.string.buy_sell_unit_price)) }
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "$type a mercado")
-            Switch(checked = true, onCheckedChange = {}, enabled = false)
-        }
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = subtotal.toFormatedCurrency(),
-            enabled = false,
-            leadingIcon = {
-                Text(text = "R$")
-            },
-            onValueChange = { },
-            label = { Text(stringResource(id = R.string.buy_sell_total_price)) }
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = finalNetValue.toFormatedCurrency(),
-            enabled = false,
-            leadingIcon = {
-                Text(text = "R$")
-            },
-            onValueChange = { },
-            label = { Text(stringResource(id = R.string.buy_sell_net_value)) }
-        )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            enabled = finalNetValue >= 0,
-            onClick = { }) {
-            Text(type)
+            }
         }
     }
 }
@@ -139,8 +170,7 @@ fun TfcBottomSheetPreview() {
         TfcBottomSheet(
             stockId = "FLRY3",
             isBuy = true,
-            currentPrice = 1.82,
-            netValue = 10_000.0
+            closeModal = { }
         )
     }
 }
