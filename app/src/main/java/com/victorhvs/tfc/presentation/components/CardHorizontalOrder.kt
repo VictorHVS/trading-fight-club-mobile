@@ -3,6 +3,8 @@ package com.victorhvs.tfc.presentation.components
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,8 +32,19 @@ fun CardHorizontalOrder(
         val type = if (isBuy) "Compra" else "Venda"
 
         ListItem(
-            headlineText = { Text("$type $amount ($symbol)") },
-            supportingText = { Text("$total_price$currency à $unitPrice$currency") },
+            colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            headlineText = {
+                Text(
+                    "$type $amount ($symbol)",
+                    style = MaterialTheme.typography.labelMedium
+                )
+            },
+            supportingText = {
+                Text(
+                    text = "$total_price$currency à $unitPrice$currency",
+                    style = MaterialTheme.typography.labelSmall
+                )
+            },
             trailingContent = {
                 Text(
                     text = trailingText
@@ -46,7 +59,7 @@ fun CardHorizontalOrder(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun CardHorizontalOrderPreview() {
     TfcTheme {

@@ -88,12 +88,12 @@ fun RowScope.AddItem(
     } == true
     NavigationBarItem(
         label = {
-            Text(text = stringResource(id = screen.title))
+            Text(text = stringResource(screen.title))
         },
         icon = {
             Icon(
                 imageVector = if (selected) screen.iconFilled else screen.iconOutlined,
-                contentDescription = stringResource(id = R.string.navigation_icon_description)
+                contentDescription = stringResource(R.string.navigation_icon_description)
             )
         },
         selected = selected,

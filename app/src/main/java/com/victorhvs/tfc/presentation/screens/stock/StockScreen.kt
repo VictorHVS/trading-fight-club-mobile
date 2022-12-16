@@ -51,7 +51,7 @@ fun StockScreen(
     stockId: String,
     viewModel: StockViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
-    showSheet: () -> Unit,
+    showSheet: (isBuy: Boolean) -> Unit,
 ) {
 
     val stockState by viewModel.stockState.collectAsState()
@@ -183,7 +183,7 @@ fun Chart(
 @Composable
 fun BuySellButtons(
     userHasStock: Boolean,
-    showSheet: () -> Unit
+    showSheet: (isBuy: Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier.padding(
@@ -191,11 +191,11 @@ fun BuySellButtons(
         ),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
     ) {
-        Button(modifier = Modifier.weight(1f), onClick = { showSheet() }) {
+        Button(modifier = Modifier.weight(1f), onClick = { showSheet(true) }) {
             Text(text = stringResource(id = R.string.buy_action))
         }
         if (userHasStock) {
-            Button(modifier = Modifier.weight(1f), onClick = { showSheet() }) {
+            Button(modifier = Modifier.weight(1f), onClick = { showSheet(false) }) {
                 Text(text = stringResource(id = R.string.sell_action))
             }
         }

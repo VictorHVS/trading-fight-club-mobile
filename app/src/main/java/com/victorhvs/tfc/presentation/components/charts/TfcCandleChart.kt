@@ -37,14 +37,10 @@ fun TfcCandleChart(
 
     val entriesNotNaN = remember { timeSeries.filterNotNull().filter { !it.close.isNaN() } }
     val mediumValue = remember {
-        val medium = (floor(entriesNotNaN.map { it.close }.average().toFloat() * 100) / 100)
-        if (medium.isNaN())
-            0f
-        else
-            medium
+        floor(entriesNotNaN.map { it.close }.average().toFloat() * 100) / 100
     }
-    val maxValue = remember { entriesNotNaN.maxByOrNull { it.high }?.high?.toFloat() ?: 0f }
-    val minValue = remember { entriesNotNaN.maxByOrNull { it.low }?.low?.toFloat() ?: 0f }
+    val maxValue = remember { entriesNotNaN.maxBy { it.high }.high.toFloat() }
+    val minValue = remember { entriesNotNaN.minBy { it.low }.low.toFloat() }
 
     AndroidView(
         modifier = modifier

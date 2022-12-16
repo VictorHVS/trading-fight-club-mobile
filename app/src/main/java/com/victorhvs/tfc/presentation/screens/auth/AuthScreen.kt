@@ -1,6 +1,9 @@
 package com.victorhvs.tfc.presentation.screens.auth
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -42,6 +46,8 @@ fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel(),
     navigateToHome: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Scaffold {
         Column(
             modifier = Modifier
@@ -54,7 +60,12 @@ fun AuthScreen(
             Providers(Modifier.fillMaxWidth(), signIn = {
                 viewModel.signIn(it)
             })
-            Footer()
+            Footer(onClick = {
+                openUrl(
+                    url = "https://github.com/VictorHVS/trading-fight-club-mobile/issues",
+                    context = context
+                )
+            })
         }
     }
 
@@ -76,9 +87,13 @@ fun AuthScreen(
 }
 
 @Composable
-fun Footer() {
+fun Footer(onClick: () -> Unit) {
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            },
         text = "Precisa de Ajuda?  •  Quer Contribuir?\n" +
                 "Made with ❤️ in Piauí, BR",
         textAlign = TextAlign.Center,
@@ -171,6 +186,14 @@ fun AuthHeader() {
             style = MaterialTheme.typography.titleLarge
         )
     }
+}
+
+fun openUrl(url: String, context: Context) {
+    context.startActivity(
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+    )
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)

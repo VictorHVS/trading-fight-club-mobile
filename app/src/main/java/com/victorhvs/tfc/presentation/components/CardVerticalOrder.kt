@@ -1,5 +1,7 @@
 package com.victorhvs.tfc.presentation.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
@@ -23,7 +25,7 @@ fun CardVerticalOrder(
     isBuy: Boolean = true,
     amount: Int,
     symbol: String,
-    total_price: Double
+    totalPrice: Double
 ) {
     Card(
         modifier = modifier
@@ -50,7 +52,7 @@ fun CardVerticalOrder(
             )
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = "R$$total_price",
+                text = "R$$totalPrice",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -62,7 +64,7 @@ fun CardVerticalOrder(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun CardVerticalOrderPreview() {
     TfcTheme {
@@ -71,7 +73,7 @@ private fun CardVerticalOrderPreview() {
             isBuy = false,
             amount = 10,
             symbol = "FLRY3.SA",
-            total_price = 123.4
+            totalPrice = 123.4
         )
     }
 }

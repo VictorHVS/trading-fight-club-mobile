@@ -1,14 +1,21 @@
 package com.victorhvs.tfc.presentation.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -19,9 +26,10 @@ import androidx.navigation.navigation
 import com.victorhvs.tfc.presentation.screens.explore.ExploreScreen
 import com.victorhvs.tfc.presentation.screens.home.BottomBarScreen
 import com.victorhvs.tfc.presentation.screens.profile.ProfileScreen
-import com.victorhvs.tfc.presentation.screens.ranking.ContestResultListScreen
+import com.victorhvs.tfc.presentation.screens.ranking.RankingListScreen
 import com.victorhvs.tfc.presentation.screens.stock.StockScreen
-import com.victorhvs.tfc.presentation.screens.stock.TfcBottomSheet
+import com.victorhvs.tfc.presentation.screens.buy_sell.TfcBottomSheet
+import com.victorhvs.tfc.presentation.screens.wallet.WalletScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -32,6 +40,7 @@ fun HomeNavGraph(navController: NavHostController, logout: () -> Unit) {
         startDestination = BottomBarScreen.Wallet.route
     ) {
         composable(route = BottomBarScreen.Wallet.route) {
+            WalletScreen()
 
         }
         composable(route = BottomBarScreen.Explore.route) {
@@ -41,7 +50,7 @@ fun HomeNavGraph(navController: NavHostController, logout: () -> Unit) {
             )
         }
         composable(route = BottomBarScreen.Rank.route) {
-            ContestResultListScreen()
+            RankingListScreen()
         }
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(navigateToAuthScreen = {
@@ -78,14 +87,34 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 skipHalfExpanded = skipHalfExpanded
             )
             val scope = rememberCoroutineScope()
+            val isBuy = remember { mutableStateOf(true) }
+
+            when(state.currentValue) {
+                ModalBottomSheetValue.Hidden -> {
+                    LocalSoftwareKeyboardController.current?.hide()
+                }
+                ModalBottomSheetValue.Expanded -> {}
+                ModalBottomSheetValue.HalfExpanded -> {}
+            }
 
             ModalBottomSheetLayout(
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.scrim),
                 sheetState = state,
                 sheetContent = {
                     TfcBottomSheet(
-                        showFeed = {},
-                        showAnotherSheet = {},
-                        arg = "ae"
+                        modifier = Modifier
+                            .background(
+                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                                color = MaterialTheme.colorScheme.surface
+                            )
+                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                        stockId = stockId,
+                        isBuy = isBuy.value,
+                        closeModal = {
+                            scope.launch {
+                                state.hide()
+                            }
+                        }
                     )
                 }
             ) {
@@ -96,6 +125,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                         navController.popBackStack()
                     },
                     showSheet = {
+                        isBuy.value = it
                         scope.launch {
                             state.show()
                         }

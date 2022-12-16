@@ -3,14 +3,17 @@ package com.victorhvs.tfc.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.victorhvs.tfc.core.DispatcherProvider
+import com.victorhvs.tfc.data.datasource.FirebaseDataSource
 import com.victorhvs.tfc.data.datasource.FirebaseStocksPagingSource
 import com.victorhvs.tfc.data.extensions.observeStatefulCollection
 import com.victorhvs.tfc.data.extensions.observeStatefulDoc
 import com.victorhvs.tfc.domain.enums.FirestoreState
 import com.victorhvs.tfc.domain.enums.Interval
+import com.victorhvs.tfc.domain.models.Order
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.domain.models.TimeSeries
 import com.victorhvs.tfc.domain.repository.StockRepository
@@ -18,6 +21,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class StockRepositoryImpl @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val firebaseDataSource: FirebaseDataSource,
     private val client: FirebaseFirestore,
     private val dispatcher: DispatcherProvider
 ) : StockRepository {
@@ -56,7 +61,10 @@ class StockRepositoryImpl @Inject constructor(
         }
 
         return observeStatefulCollection(query)
+    }
 
+    override suspend fun postOrder(order: Order) {
+        firebaseDataSource.postOrder(order, auth.currentUser!!.uid)
     }
 
 }

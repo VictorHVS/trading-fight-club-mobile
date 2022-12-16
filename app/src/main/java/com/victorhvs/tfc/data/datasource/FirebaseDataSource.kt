@@ -3,16 +3,15 @@ package com.victorhvs.tfc.data.datasource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.victorhvs.tfc.core.DispatcherProvider
-import com.victorhvs.tfc.data.extensions.observeStatefulCollection
 import com.victorhvs.tfc.data.extensions.observeStatefulDoc
-import com.victorhvs.tfc.data.repository.StockRepositoryImpl
 import com.victorhvs.tfc.domain.enums.FirestoreState
+import com.victorhvs.tfc.domain.models.Order
 import com.victorhvs.tfc.domain.models.Stock
 import com.victorhvs.tfc.domain.models.User
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 interface FirebaseDataSource {
     suspend fun getStocks(): List<Stock>
@@ -20,6 +19,8 @@ interface FirebaseDataSource {
     suspend fun getRanking(): List<User>
 
     suspend fun getUser(userId: String): Flow<FirestoreState<User?>>
+
+    suspend fun postOrder(order: Order, userId: String)
 }
 
 class FirebaseDataSourceImp @Inject constructor(
@@ -65,5 +66,14 @@ class FirebaseDataSourceImp @Inject constructor(
     override suspend fun getUser(userId: String): Flow<FirestoreState<User?>> {
         val path = "${USER_REF}/$userId"
         return observeStatefulDoc(client.document(path))
+    }
+
+    override suspend fun postOrder(order: Order, userId: String) {
+        return withContext(dispatcher.io()) {
+            val orderPath = "users/$userId/orders"
+            val orderRef = client.collection(orderPath).document()
+
+            orderRef.set(order.copy(uuid = orderRef.id, userId = userId)).await()
+        }
     }
 }
