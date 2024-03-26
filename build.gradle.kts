@@ -22,12 +22,12 @@ buildscript {
         maven(url = "https://jitpack.io")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.44.2")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.7.10")
-        classpath("com.google.gms:google-services:4.3.14")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
+        classpath("com.android.tools.build:gradle:8.3.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.51")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.9.23")
+        classpath("com.google.gms:google-services:4.4.1")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730")
     }
 }
@@ -35,9 +35,9 @@ buildscript {
 val liba = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.jetbrains.kotlinx.kover") version "0.7.6"
+    id("io.gitlab.arturbosch.detekt") version "1.23.6"
+    id("org.sonarqube") version "5.0.0.4638"
 }
 
 val Test.isDev get() = name.contains("debug", ignoreCase = true)
